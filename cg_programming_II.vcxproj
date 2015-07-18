@@ -101,22 +101,26 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Ball.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="Object.cpp" />
-    <ClCompile Include="Paddle.cpp" />
-    <ClCompile Include="World.cpp" />
+    <None Include="BasicFragmentShader.fragmentshader" />
+    <None Include="BasicVertexShader.vertexshader" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
     <ClInclude Include="Ball.h" />
+    <ClInclude Include="Cube.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="Paddle.h" />
+    <ClInclude Include="Plane.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="BasicFragmentShader.fragmentshader" />
-    <None Include="BasicVertexShader.vertexshader" />
+    <ClCompile Include="Ball.cpp" />
+    <ClCompile Include="Cube.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Object.cpp" />
+    <ClCompile Include="Paddle.cpp" />
+    <ClCompile Include="Plane.cpp" />
+    <ClCompile Include="World.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
