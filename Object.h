@@ -22,16 +22,20 @@ class Object{
 
 		void SaveObjectState(char *message = "Saved Object State");
 		void LoadObjectState(char *message = "Loaded Object State");
-		void LoadTriangles(const GLuint& perRow, const GLuint& perColumn, const GLenum& renderMode);
+		GLuint LoadBMP(const char * imagepath);
 
 	protected:
+		void Object::BuildCube();
+		void BuildTriangles(const GLuint& perRow, const GLuint& perColumn);
+		void BuildTriangleStrip(const GLuint& perRow, const GLuint& perColumn);
 		Object* objectState;
 		vec3 position, scale;
 
-	private:
+	protected:
+		void LoadTriangles(GLfloat *vertices, GLfloat *uvs);
 		float leftX, rightX, topY, bottomY;
+		float rotSpeed, rotAngle;
 		mat4 Render();
-		GLuint numIndices;
-		GLuint vertexBufferID;
-		GLenum renderMode;
+		GLuint textureID, uvID;
+		GLuint numIndices, numUVs, vertexBufferID, renderMode;
 };

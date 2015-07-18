@@ -1,134 +1,153 @@
 #include "World.h"
 
-World::World(){
-	balls = new Ball[numBalls = 1];
-	balls[0].SetVelocity(vec3(1.0f, 0.1f, 0.0f));
-	balls[0].SetPosition(vec3(0.0f, 0.0f, 0.0f));
+namespace{
+	const u8 MAX_BUFFER_SIZE = 64;
+	const u8 MAX_PATH_SIZE = 32;
 
-	paddles = new Paddle[numPaddles = 4];
+	u16 GetNumCharCount(u8 *src){
+		u16 count = 0;
+		while(IS_NUMBER(*src)){
+			++count;
+			++src;
+		}
 
-	//Will move these paddles via user input...
-	paddles[0].SetPosition(vec3(1.5f, 0.0f, 0.0f));
-	paddles[1].SetPosition(vec3(-1.5f, 0.0f, 0.0f));
-
-	paddles[0].SetKeys(GLFW_KEY_UP, GLFW_KEY_DOWN); 
-	paddles[1].SetKeys(GLFW_KEY_W, GLFW_KEY_S); 
-
-	//Using these paddles to serve as upper and lower walls...
-	paddles[2].SetPosition(vec3(0.0f, 1.15f, 0.0f));
-	paddles[3].SetPosition(vec3(0.0f, -1.15f, 0.0f));
-	paddles[2].SetScale(vec3(1.45f, 0.025f, 1.0f));
-	paddles[3].SetScale(vec3(1.45f, 0.025f, 1.0f));
-
-	SaveObjectStates();
-
-	resetKey = GLFW_KEY_SPACE;
-}
-
-World::~World(){
-	delete[] balls;
-	balls = NULL;
-
-	delete[] paddles;
-	balls = NULL;
-}
-
-void World::LoadObjectStates(){
-	for(GLuint i = 0; i < numBalls; ++i){
-		balls[i].LoadObjectState("Loaded Ball State!!!");
-	}
-	for(GLuint i = 0; i < numPaddles; ++i){
-		paddles[i].LoadObjectState("Loaded Paddle State!!!");
+		return count;
 	}
 }
 
-void World::SaveObjectStates(){
-	for(GLuint i = 0; i < numBalls; ++i){
-		balls[i].SaveObjectState("Saved Ball State!!!");
-	}
-	for(GLuint i = 0; i < numPaddles; ++i){
-		paddles[i].SaveObjectState("Saved Paddle State!!!");
-	}
-}
-
-void World::ResetWorld(){
-	static bool keyPressed = false;
-
-	if(!keyPressed && glfwGetKey(window, resetKey) == GLFW_PRESS){
-		LoadObjectStates();
-		keyPressed = true;
-	}
-	else if(keyPressed && glfwGetKey(window, resetKey) == GLFW_RELEASE){
-		keyPressed = false;
-	}
-}
-
-void World::Update(const float& deltaTime){
-
-	ResetWorld();
-
-	for(GLuint i = 0; i < numBalls; ++i){
-		balls[i].Update(deltaTime);
-	}
-
-	for(GLuint i = 0; i < numPaddles; ++i){
-		paddles[i].Update(deltaTime);
-		
-		//HandleCollision...
-		for(GLuint j = 0; j < numBalls; ++j){
-			Paddle &paddle = paddles[i];
-			Ball &ball = balls[j];
-			
-			float leftDist = ball.GetRightX() - paddle.GetLeftX();
-			float rightDist = paddle.GetRightX() - ball.GetLeftX();
-			float topDist = paddle.GetTopY() - ball.GetBottomY();
-			float bottomDist = ball.GetTopY() - paddle.GetBottomY();
-
-			//Collision Happens...
-			if(rightDist > 0.0f && leftDist > 0.0f && topDist > 0.0f && bottomDist > 0.0f){
-
-				vec3 pushDir;
-				float pushDist = 0.0f;
-
-				//Set push-out direction based on which ever distance is smallest...
-				if(rightDist < leftDist && rightDist < topDist && rightDist < bottomDist)
-					pushDir = vec3(pushDist = rightDist, 0.0f, 0.0f);
-				else if(leftDist < rightDist && leftDist < topDist && leftDist < bottomDist)
-					pushDir = vec3(-(pushDist = leftDist), 0.0f, 0.0f);
-				else if(topDist < leftDist && topDist < rightDist && topDist < bottomDist)
-					pushDir = vec3(0.0f, -(pushDist = topDist), 0.0f);
-				else if(bottomDist < leftDist && bottomDist < topDist && bottomDist < rightDist)
-					pushDir = vec3(0.0f, pushDist = topDist, 0.0f);
-
-				pushDir = glm::normalize(pushDir);
-				vec3 ballPos = ball.GetPosition();
-
-				//If we wanted a smooth effect we would simply push back...
-				//ballPos += (pushDir * pushDist);	
-				//However, we want to reflect off of our last good position, so we will simply revert the velocity...
-				vec3 revertedVelocity = ball.GetVelocity() * deltaTime;
-				vec3 revertedPos = ballPos - revertedVelocity;
-
-				//Let's also accelerate our velocity on hit...
-				float acceleration = 1.01f;	//And of course we apply our reflection math here...
-				vec3 reflectedVelocity = ball.GetVelocity() - (pushDir * glm::dot(ball.GetVelocity(), pushDir) * 2.0f);
-				vec3 lostVelocity = reflectedVelocity * deltaTime;	//And don't forget to re-apply our lost velocity...
-
-				ball.SetPosition(revertedPos + lostVelocity);
-				ball.SetVelocity(reflectedVelocity * acceleration);
-
-				//Let's play a sound :)
-				printf("\a");
-			}
+static void FillBuffer(u8 *src, u8 *dest, u16 &index, u16 const &length){
+	for(u16 i = 0, count = 0; count < length; ++i){
+		if(IS_NUMBER(src[i])){
+			dest[index++] = src[i];
+			++count;
 		}
 	}
 }
 
+//TODO: Add functionality later...
+World::World(){
+	plane = new Plane(1, 1);
+	//plane->SetScale(vec3(0.15f));
+	//plane->SetPosition(vec3(-1.0f, -1.0f, 0.0f));
+
+	cube = new Cube();
+	cube->SetScale(vec3(0.5f));
+	cube->SetPosition(vec3(-2.0f, -2.0f, 0.0f));
+
+	//GLuint textureID = plane->LoadBMP("test.bmp");
+	//GLuint textureID = plane->LoadBMP("dirt.bmp");
+	GLuint textureID = plane->LoadBMP("world.bmp");
+
+	//load world...
+	ifstream myfile(LEVEL_0);
+
+	char buffer[::MAX_BUFFER_SIZE];
+	char path[::MAX_PATH_SIZE];
+
+	if (myfile.is_open())
+	{
+		string line;
+		unsigned char len = 0;
+
+		bool loadLevelData = true;
+
+		while(getline (myfile,line) )
+		{
+			line.copy(buffer, len = line.length());
+			buffer[len] = '\0';
+
+			if(IS_EMPTY_LINE(buffer[0])){
+				continue;
+			}
+			else if(LOAD_TEXTURE(buffer[0])){
+				//Setting buffer size...
+				numTextures = buffer[1] - ASCII_ZERO;
+				textureBuffer = (u8*)malloc(MAX_PATH_SIZE * numTextures);
+
+				loadLevelData = false;
+				continue;
+			}
+			else if(LOAD_LEVELDATA(buffer[0])){
+				//Adding 1 to accomindate for comma...
+				u8 numStride = ::GetNumCharCount((u8*)&buffer[1]) + 1;
+
+				levelWidth = std::stoi(&buffer[1]);
+				levelHeight = std::stoi(&buffer[1 + numStride]);
+
+				levelBuffer = (u8*)malloc(levelWidth * levelHeight);
+
+				loadLevelData = true;
+				continue;
+			}
+			else if(loadLevelData){
+				//TODO: May need to put this elsewhere so it doesn't persist...
+				static u16 levelIndex = 0;
+
+				//FillBuffer((u8*)buffer, levelBuffer, levelIndex, levelWidth);
+
+				continue;
+			}
+
+			unsigned char commaLen = FindChar(buffer, ',');
+
+			static u8 texIndex = 0;
+
+			//numTextures = buffer[1] - ASCII_ZERO;
+			//	textureBuffer = (u8*)malloc(MAX_PATH_SIZE * numTextures);
+
+			//Found textures...
+			if(commaLen > 0){
+				strcpy(path, buffer);
+				path[commaLen - 1] = '\0';
+
+				memcpy(&textureBuffer[texIndex], &path, MAX_PATH_SIZE);
+				texIndex += MAX_PATH_SIZE - 1;
+				
+				continue;
+			}
+
+			//load textures...
+			//string filePath = 
+		}
+
+		myfile.close();
+	}
+
+	else cout << "Unable to open file"; 
+}
+
+unsigned char World::FindChar(const char* buffer, const char& c){
+	//TODO: Search for char c, if found return true...
+	char* value = (char*)buffer;
+	unsigned char len = 0;
+
+	while(value != '\0'){
+		++len;
+		if(*value == c){
+			return len;
+		}
+		++value;
+	}
+
+	return len = 0;
+}
+
+//TODO: Add functionality later...
+World::~World(){
+	//delete plane;
+	//plane = NULL;
+
+	delete cube;
+	cube = NULL;
+}
+
+void World::Update(const float& deltaTime){
+
+	//plane->Update(deltaTime);
+	cube->Update(deltaTime);
+}
+
 void World::Render(const Camera& camera){
-	for(GLuint i = 0; i < numBalls; ++i){
-		balls[i].Render(camera);
-	}
-	for(GLuint i = 0; i < numPaddles; ++i){
-		paddles[i].Render(camera);
-	}
+	//plane->Render(camera);
+	cube->Render(camera);
 }
