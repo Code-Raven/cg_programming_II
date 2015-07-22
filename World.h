@@ -1,7 +1,5 @@
 #include "Object.h"
 #include "Plane.h"
-#include "Ball.h"
-#include "Paddle.h"
 #include "Cube.h"
 
 #pragma once

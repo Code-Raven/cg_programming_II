@@ -26,13 +26,10 @@ class Object{
 
 	protected:
 		void Object::BuildCube();
-		void BuildTriangles(const GLuint& perRow, const GLuint& perColumn);
-		void BuildTriangleStrip(const GLuint& perRow, const GLuint& perColumn);
 		Object* objectState;
 		vec3 position, scale;
 
 	protected:
-		void LoadTriangles(GLfloat *vertices, GLfloat *uvs);
 		float leftX, rightX, topY, bottomY;
 		float rotSpeed, rotAngle;
 		mat4 Render();

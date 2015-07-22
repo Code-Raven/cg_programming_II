@@ -32,7 +32,7 @@ World::World(){
 
 	cube = new Cube();
 	cube->SetScale(vec3(0.5f));
-	cube->SetPosition(vec3(-2.0f, -2.0f, 0.0f));
+	//cube->SetPosition(vec3(-2.0f, -2.0f, 0.0f));
 
 	//GLuint textureID = plane->LoadBMP("test.bmp");
 	//GLuint textureID = plane->LoadBMP("dirt.bmp");

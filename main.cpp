@@ -42,6 +42,49 @@ int InitWindowFailed(){
 	return EXIT_WITH_SUCCESS;
 }
 
+char *LoadFile(const char *fileName, size_t &bufferSize, size_t &numLines)
+{
+	//TODO: -Open file-
+	FILE *fr = fopen(fileName, "r");
+	if(fr == NULL){
+		perror("Cannot open shader file");
+		return NULL;
+	}
+
+	//Since file is not NULL, there will always be at least 1 line
+	numLines = 1;
+	bufferSize = 0;
+
+	//TODO: -get file size-
+	fseek(fr, 0L, SEEK_END);
+	size_t fSize = ftell(fr);
+	fseek(fr, 0L, SEEK_SET);
+
+	//TODO: Allocate read buffer
+	size_t bSize = fSize + 1;
+	char *buffer = (char*)malloc(bSize);
+	
+	//TODO: stream file to buffer
+	char nextChar = '\0';
+	for(size_t i = 0; i < bSize; ++i){
+		nextChar = fgetc(fr);
+
+		if(nextChar == EOF){
+			nextChar = '\0';
+		}else{
+			++bufferSize;
+			if(nextChar == '\n') {
+				++numLines;
+			}
+		}
+
+		buffer[i] = nextChar;
+	}
+
+	fclose(fr);
+	return buffer;
+}
+
 GLuint LoadShaders(const char *vertex_file_path, const char *fragment_file_path){
 	GLuint vertexShaderID = glCreateShader(GL_VERTEX_SHADER);
 	GLuint fragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
@@ -127,6 +170,48 @@ GLuint LoadShaders(const char *vertex_file_path, const char *fragment_file_path)
 	return programID;
 }
 
+GLuint *LoadShaders(const char *fileName, size_t &numShaders)
+{
+	//TODO: Allocate read buffer
+	size_t bufferSize = 0;
+	char* buffer = LoadFile(fileName, bufferSize, numShaders);
+	GLuint* shaderIds = (GLuint*)malloc(sizeof(GLuint) * numShaders);
+	size_t vfBufferSize = numShaders * 64;
+
+	char* vBuffer = (char*)malloc(vfBufferSize);
+	char* fBuffer = (char*)malloc(vfBufferSize);
+	memset(vBuffer, '\0', vfBufferSize);
+	memset(fBuffer, '\0', vfBufferSize);
+	
+
+	char nextChar = '\0';
+	for(size_t i = 0, nextIndex = 0, buffIndex = 0, vShaderIndex = 0, fShaderIndex = 0; i < bufferSize; ++i){
+		nextChar = buffer[i];
+		if(nextChar == ','){
+			buffIndex = 0;
+			++vShaderIndex;
+		}else if(nextChar == '\n'){
+			buffIndex = 0;
+			shaderIds[fShaderIndex++] = LoadShaders(&vBuffer[vShaderIndex - 1], &fBuffer[fShaderIndex]);
+		}else{
+			if(vShaderIndex > fShaderIndex){
+				nextIndex = (64 * fShaderIndex) + buffIndex++;
+				fBuffer[nextIndex] = nextChar;
+			}else{
+				nextIndex = (64 * vShaderIndex) + buffIndex++;
+				vBuffer[nextIndex] = nextChar;
+			}
+		}
+	}
+
+	free(buffer);	buffer = NULL;
+	free(vBuffer);	vBuffer = NULL;
+	free(fBuffer);	fBuffer = NULL;
+      
+	return shaderIds;
+}
+
+
 int InitGlewFailed(){
 	glewExperimental = true; //Has to do with core profile.
 	if(glewInit() != GLEW_OK){
@@ -158,12 +243,14 @@ int main(){
 	glBindVertexArray(vertexArrayID);
 
 	//Create and compile glsl program from shaders...
-	GLuint programID = LoadShaders("BasicVertexShader.vertexshader", "BasicFragmentShader.fragmentshader");
-	glUseProgram(programID);
+	size_t numShaders = 0;
+	GLuint *programIds = LoadShaders("shaders.txt", numShaders);
+	GLuint activeProgramId = programIds[0]; //LoadShaders("Basic.vert", "Basic.frag"); //programIds[0];
+	glUseProgram(activeProgramId);
 
 	Camera camera;
 	float aspectRatio = SCREEN_WIDTH/(float)SCREEN_HEIGHT;
-	camera.MVPMatrixID = glGetUniformLocation(programID, "MVP");
+	camera.MVPMatrixID = glGetUniformLocation(activeProgramId, "MVP");
 	camera.projectionMatrix = perspective(FIELD_OF_VIEW, aspectRatio, Z_NEAR, Z_FAR);
 
 	World world;
