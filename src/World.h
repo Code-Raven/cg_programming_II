@@ -21,14 +21,8 @@ class World{
 
 		void Update(const float& deltaTime);
 		void Render(const Camera& camera);
-
-	private:
-		unsigned char FindChar(const char* buffer, const char& c);
 		
 	private:
 		Plane* plane;
 		Cube* cube;
-		u8* levelBuffer;
-		u8* textureBuffer;
-		u8 numTextures, levelWidth, levelHeight;
 };

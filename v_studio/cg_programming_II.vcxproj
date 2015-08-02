@@ -14,6 +14,37 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\src\Application.h" />
+    <ClInclude Include="..\src\Cube.h" />
+    <ClInclude Include="..\src\dirent.h" />
+    <ClInclude Include="..\src\Object.h" />
+    <ClInclude Include="..\src\Plane.h" />
+    <ClInclude Include="..\src\World.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\Application.cpp" />
+    <ClCompile Include="..\src\Cube.cpp" />
+    <ClCompile Include="..\src\main.cpp" />
+    <ClCompile Include="..\src\Object.cpp" />
+    <ClCompile Include="..\src\Plane.cpp" />
+    <ClCompile Include="..\src\World.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\resource\basic.frag" />
+    <None Include="..\resource\basic.vert" />
+    <None Include="..\resource\texture.frag" />
+    <None Include="..\resource\texture.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\resource\dirt.bmp" />
+    <Image Include="..\resource\test.bmp" />
+    <Image Include="..\resource\world.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\resource\level_0.txt" />
+    <Text Include="..\resource\TODO.txt" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{A5D5F199-08F1-4EA5-A3AC-58CC94FFEC1E}</ProjectGuid>
     <RootNamespace>cg_programming_II</RootNamespace>
@@ -100,26 +131,6 @@
       <AdditionalLibraryDirectories>glew\lib;glfw\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <None Include="Basic.frag" />
-    <None Include="Basic.vert" />
-    <None Include="Texture.frag" />
-    <None Include="Texture.vert" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Application.h" />
-    <ClInclude Include="Cube.h" />
-    <ClInclude Include="Object.h" />
-    <ClInclude Include="Plane.h" />
-    <ClInclude Include="World.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="Cube.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="Object.cpp" />
-    <ClCompile Include="Plane.cpp" />
-    <ClCompile Include="World.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

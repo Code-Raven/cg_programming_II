@@ -1,14 +1,3 @@
-//GLEW provides the function pointers we need to access the latest features in openGL.
-#include <GL/glew.h>    //Must be included before gl.h and glfw.h.
-
-//GLFW provides window creation and input control.
-#include <glfw3.h>
-
-//GLM provides openGL mathematics.
-#define GLM_FORCE_RADIANS	//Defining this before glm to ignore warnings we don't care about...
-#include <glm/glm.hpp>
-#include "glm/gtc/matrix_transform.hpp"
-
 //Standard Headers…
 #include <stdio.h>
 #include <memory.h>
@@ -21,7 +10,28 @@
 #include <string>
 #include <functional>
 #include <vector>
-#include <dirent.h> //read in directory files using DIR
+
+//If we are on windows we want a single define for it...
+#if !defined(_WIN32) && (defined(__WIN32__) || defined(WIN32) || defined(__MINGW32__))
+ #define _WIN32
+#endif
+
+#ifdef _WIN32	//read in directory files using DIR
+	#include "dirent.h" //Since not available on windows, will need to bring in our own header...
+#else
+	#include <dirent.h>
+#endif
+
+//GLM provides openGL mathematics.
+#define GLM_FORCE_RADIANS	//Defining this before glm to ignore warnings we don't care about...
+#include <glm/glm.hpp>
+#include "glm/gtc/matrix_transform.hpp"
+
+//GLEW provides the function pointers we need to access the latest features in openGL.
+#include <GL/glew.h>    //Must be included before gl.h and glfw.h.
+
+//GLFW provides window creation and input control.
+#include <glfw3.h>
 
 #pragma once
 
@@ -31,7 +41,7 @@ using namespace std; //If we want to print stuff
 
 //Defines…
 #define APP_NAME "cg programming II"
-#define RESOURCE_PATH "resource/"
+#define RESOURCE_PATH "../resource/"
 #define EXIT_WITH_ERROR -1
 #define EXIT_WITH_SUCCESS 0
 #define OPEN_GL_VERSION 3  //Specifies OpenGL 3.3
@@ -59,7 +69,6 @@ namespace setup
 {
     void window_refresh_callback(GLFWwindow* window);
     int InitWindowFailed();
-    char *LoadFile(const char *fileName, size_t &bufferSize, size_t &numLines);
     GLuint LoadShaders(const char *vertex_file_path, const char *fragment_file_path);
     GLuint *LoadShaders(size_t &numShaders);
     int InitGlewFailed();

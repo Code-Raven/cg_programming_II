@@ -38,53 +38,6 @@ int setup::InitWindowFailed(){
     return EXIT_WITH_SUCCESS;
 }
 
-char* setup::LoadFile(const char *fileName, size_t &bufferSize, size_t &numLines)
-{
-    //TODO: -Open file-
-    char path[256];
-    strcpy(path, (char*)RESOURCE_PATH);
-    strcat(path, fileName);
-    
-    FILE *fr = fopen(path, "r");
-    if(fr == NULL){
-        perror("Cannot open shader file");
-        return NULL;
-    }
-    
-    //Since file is not NULL, there will always be at least 1 line
-    numLines = 1;
-    bufferSize = 0;
-    
-    //TODO: -get file size-
-    fseek(fr, 0L, SEEK_END);
-    size_t fSize = ftell(fr);
-    fseek(fr, 0L, SEEK_SET);
-    
-    //TODO: Allocate read buffer
-    size_t bSize = fSize + 1;
-    char *buffer = (char*)malloc(bSize);
-    
-    //TODO: stream file to buffer
-    char nextChar = '\0';
-    for(size_t i = 0; i < bSize; ++i){
-        nextChar = fgetc(fr);
-        
-        if(nextChar == EOF){
-            nextChar = '\0';
-        }else{
-            ++bufferSize;
-            if(nextChar == '\n') {
-                ++numLines;
-            }
-        }
-        
-        buffer[i] = nextChar;
-    }
-    
-    fclose(fr);
-    return buffer;
-}
-
 GLuint setup::LoadShaders(const char *vertex_file_path, const char *fragment_file_path){
     
     GLuint vertexShaderID = glCreateShader(GL_VERTEX_SHADER);

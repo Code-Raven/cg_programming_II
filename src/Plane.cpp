@@ -14,13 +14,13 @@ void Plane::BuildTriangles(const GLuint& perRow, const GLuint& perColumn){
 
 	GLfloat *vertices = new GLfloat[numValues];
 	for(int i = 0, x = 0, y = 0; i < numValues; ++x){
-		vertices[i] = x;		vertices[++i] = y + 1;	vertices[++i] = 0;
-		vertices[++i] = x;		vertices[++i] = y;		vertices[++i] = 0;
-		vertices[++i] = x + 1;	vertices[++i] = y + 1;	vertices[++i] = 0;
+		vertices[i] = x + 0.0f;		vertices[++i] = y + 1.0f;	vertices[++i] = 0.0f;
+		vertices[++i] = x + 0.0f;	vertices[++i] = y + 0.0f;	vertices[++i] = 0.0f;
+		vertices[++i] = x + 1.0f;	vertices[++i] = y + 1.0f;	vertices[++i] = 0.0f;
 		
-		vertices[++i] = x + 1;	vertices[++i] = y;		vertices[++i] = 0;
-		vertices[++i] = x + 1;	vertices[++i] = y + 1;	vertices[++i] = 0;
-		vertices[++i] = x;		vertices[++i] = y;		vertices[++i] = 0;
+		vertices[++i] = x + 1.0f;	vertices[++i] = y + 0.0f;	vertices[++i] = 0.0f;
+		vertices[++i] = x + 1.0f;	vertices[++i] = y + 1.0f;	vertices[++i] = 0.0f;
+		vertices[++i] = x + 0.0f;	vertices[++i] = y + 0.0f;	vertices[++i] = 0.0f;
 
 		if(++i % numValuesPerRow == 0){
 			x = -1; --y;
@@ -32,13 +32,13 @@ void Plane::BuildTriangles(const GLuint& perRow, const GLuint& perColumn){
 
 	GLfloat *uvs = new GLfloat[numUvValues];
 	for(int i = 0, u = 0, v = 0; i < numUvValues; ++u){
-		uvs[i] = u + 0.625f;	uvs[++i] = -v - 0.9166;
-		uvs[++i] = u + 0.625f;	uvs[++i] = -v - 1;
-		uvs[++i] = u + 0.6875f;		uvs[++i] = -v - 0.9166;
+		uvs[i] = u + 0.625f;		uvs[++i] = -v - 0.9166f;
+		uvs[++i] = u + 0.625f;		uvs[++i] = -v - 1.0f;
+		uvs[++i] = u + 0.6875f;		uvs[++i] = -v - 0.9166f;
 		
-		uvs[++i] = u + 0.6875f;		uvs[++i] = -v - 1;
-		uvs[++i] = u + 0.6875f;		uvs[++i] = -v - 0.9166;
-		uvs[++i] = u + 0.625f;	uvs[++i] = -v - 1;
+		uvs[++i] = u + 0.6875f;		uvs[++i] = -v - 1.0f;
+		uvs[++i] = u + 0.6875f;		uvs[++i] = -v - 0.9166f;
+		uvs[++i] = u + 0.625f;		uvs[++i] = -v - 1.0f;
 
 		if(++i % numUvValuesPerRow == 0){
 			u = -1; ++v;

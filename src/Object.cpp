@@ -82,7 +82,11 @@ GLuint Object::LoadBMP(const char * imagepath){
 
 	// Open the file
 	const char* mode = "rb";
-	FILE * file = fopen(imagepath, mode);
+	FILE * file = nullptr;
+	if(fopen_s(&file, imagepath, mode)){
+		printf("File could not be opened\n");
+		return 0;
+	}
 	if (!file){
 		printf("Image could not be opened\n");
 		return 0;
