@@ -59,6 +59,7 @@
 		F88005E71B6C9217006263CB /* texture.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = texture.frag; path = ../resource/texture.frag; sourceTree = "<group>"; };
 		F88005E81B6C9217006263CB /* texture.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = texture.vert; path = ../resource/texture.vert; sourceTree = "<group>"; };
 		F8FE4D501B6EC89100371851 /* TODO.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = TODO.txt; path = ../resource/TODO.txt; sourceTree = "<group>"; };
+		F8FE4D521B6ED1F700371851 /* bunny.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = bunny.obj; path = ../resource/bunny.obj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,6 +129,7 @@
 		F88005DA1B6C88DD006263CB /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				F8FE4D521B6ED1F700371851 /* bunny.obj */,
 				F8FE4D501B6EC89100371851 /* TODO.txt */,
 				F88005E41B6C9217006263CB /* basic.frag */,
 				F88005E51B6C9217006263CB /* basic.vert */,
