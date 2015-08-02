@@ -32,11 +32,11 @@ World::World(){
 
 	cube = new Cube();
 	cube->SetScale(vec3(0.5f));
-	cube->SetPosition(vec3(-2.0f, -2.0f, 0.0f));
+	//cube->SetPosition(vec3(-2.0f, -2.0f, 0.0f));
 
 	//GLuint textureID = plane->LoadBMP("test.bmp");
 	//GLuint textureID = plane->LoadBMP("dirt.bmp");
-	GLuint textureID = plane->LoadBMP("world.bmp");
+	//GLuint textureID = plane->LoadBMP("world.bmp");
 
 	//load world...
 	ifstream myfile(LEVEL_0);
@@ -83,7 +83,7 @@ World::World(){
 				//TODO: May need to put this elsewhere so it doesn't persist...
 				static u16 levelIndex = 0;
 
-				//FillBuffer((u8*)buffer, levelBuffer, levelIndex, levelWidth);
+				FillBuffer((u8*)buffer, levelBuffer, levelIndex, levelWidth);
 
 				continue;
 			}
@@ -121,7 +121,7 @@ unsigned char World::FindChar(const char* buffer, const char& c){
 	char* value = (char*)buffer;
 	unsigned char len = 0;
 
-	while(value != '\0'){
+	while(*value != '\0'){
 		++len;
 		if(*value == c){
 			return len;

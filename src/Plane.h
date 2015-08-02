@@ -10,5 +10,9 @@ class Plane : public Object{
 		virtual ~Plane();
 
 	private:
+		void BuildTriangles(const GLuint& perRow, const GLuint& perColumn);
+		void LoadTriangles(GLfloat *vertices, GLfloat *uvs);
+
+	private:
 		GLuint width, height;
 };

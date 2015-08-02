@@ -20,19 +20,16 @@ class Object{
 		float GetTopY();
 		float GetBottomY();
 
-		void SaveObjectState(char *message = "Saved Object State");
-		void LoadObjectState(char *message = "Loaded Object State");
+		void SaveObjectState(char *message = (char*)"Saved Object State");
+		void LoadObjectState(char *message = (char*)"Loaded Object State");
 		GLuint LoadBMP(const char * imagepath);
 
 	protected:
-		void Object::BuildCube();
-		void BuildTriangles(const GLuint& perRow, const GLuint& perColumn);
-		void BuildTriangleStrip(const GLuint& perRow, const GLuint& perColumn);
+		void BuildCube();
 		Object* objectState;
 		vec3 position, scale;
 
 	protected:
-		void LoadTriangles(GLfloat *vertices, GLfloat *uvs);
 		float leftX, rightX, topY, bottomY;
 		float rotSpeed, rotAngle;
 		mat4 Render();
