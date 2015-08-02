@@ -41,7 +41,6 @@ using namespace std; //If we want to print stuff
 
 //Defines…
 #define APP_NAME "cg programming II"
-#define RESOURCE_PATH "../resource/"
 #define EXIT_WITH_ERROR -1
 #define EXIT_WITH_SUCCESS 0
 #define OPEN_GL_VERSION 3  //Specifies OpenGL 3.3
@@ -52,6 +51,12 @@ using namespace std; //If we want to print stuff
 #define Z_NEAR 0.1f
 #define Z_FAR 100.0f
 #define GLFW_FAIL 0
+
+#ifdef _WIN32
+    #define RESOURCE_PATH "../resource/"
+#else
+    #define RESOURCE_PATH "resource/"
+#endif
 
 //TypedefsÉ
 typedef vector<string> stdVecStr;

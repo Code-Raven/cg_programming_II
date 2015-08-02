@@ -1,15 +1,14 @@
 #include "Object.h"
 
 Object::Object(){
-	objectState = NULL;
+	objectState = nullptr;
 	renderMode = GL_TRIANGLES;
 	vertexBufferID = 0;
-	SetPosition(vec3(0));
-	SetScale(vec3(1));
 	numIndices = 6;
-	numUVs = 0;
-	textureID = 0;
-	rotSpeed = 0;
+    position = {0, 0, 0};
+    scale = {1, 1, 1};
+	numUVs = textureID = rotSpeed = rotAngle = 0;
+    leftX = rightX = topY = bottomY = 0;
 }
 
 Object::~Object(){
@@ -60,7 +59,7 @@ void Object::Render(const Camera& camera){
 }
 
 void Object::SaveObjectState(char *message){
-	if(objectState == NULL)
+	if(!objectState)
 		objectState = (Object*)malloc(sizeof(*this));
 
 	*objectState = *this;
@@ -82,11 +81,17 @@ GLuint Object::LoadBMP(const char * imagepath){
 
 	// Open the file
 	const char* mode = "rb";
-	FILE * file = nullptr;
-	if(fopen_s(&file, imagepath, mode)){
-		printf("File could not be opened\n");
-		return 0;
-	}
+    
+    #ifdef _WIN32	//keep windows from complaining…
+        FILE * file = nullptr;
+        if(fopen_s(&file, imagepath, mode)){
+            printf("File could not be opened\n");
+            return 0;
+        }
+    #else
+        FILE * file = fopen(imagepath, mode);
+    #endif
+    
 	if (!file){
 		printf("Image could not be opened\n");
 		return 0;

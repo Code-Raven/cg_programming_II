@@ -4,6 +4,7 @@
 
 class Object{
 
+    //Methods…
 	public:
 		Object();
 
@@ -26,6 +27,9 @@ class Object{
 
 	protected:
 		void BuildCube();
+    
+    //Members…
+    protected:
 		Object* objectState;
 		vec3 position, scale;
 
