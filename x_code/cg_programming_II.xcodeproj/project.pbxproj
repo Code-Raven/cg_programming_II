@@ -10,8 +10,8 @@
 		F810727C1AD038F200FFE13E /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F810727B1AD038F200FFE13E /* OpenGL.framework */; };
 		F810727E1AD0391E00FFE13E /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F810727D1AD0391E00FFE13E /* Cocoa.framework */; };
 		F81072801AD0392600FFE13E /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F810727F1AD0392600FFE13E /* GLUT.framework */; };
-		F81072821AD0666800FFE13E /* libGLEW.1.10.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F81072811AD0666800FFE13E /* libGLEW.1.10.0.dylib */; };
-		F81072841AD0690C00FFE13E /* libglfw3.3.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F81072831AD0690C00FFE13E /* libglfw3.3.1.dylib */; };
+		F824BDF91B6EA73D0065EADF /* libGLEW.1.10.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F824BDF81B6EA73D0065EADF /* libGLEW.1.10.0.dylib */; };
+		F824BDFB1B6EA7520065EADF /* libglfw3.3.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F824BDFA1B6EA7520065EADF /* libglfw3.3.1.dylib */; };
 		F87C494A1B6D1FB400176A46 /* Cube.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F87C49411B6D1FB400176A46 /* Cube.cpp */; };
 		F87C494B1B6D1FB400176A46 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F87C49431B6D1FB400176A46 /* main.cpp */; };
 		F87C494C1B6D1FB400176A46 /* Object.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F87C49441B6D1FB400176A46 /* Object.cpp */; };
@@ -33,12 +33,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		F81072711AD036C000FFE13E /* cg_graphics */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; name = cg_graphics; path = cg_programming_II; sourceTree = BUILT_PRODUCTS_DIR; };
+		F81072711AD036C000FFE13E /* cg_programming_II */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = cg_programming_II; sourceTree = BUILT_PRODUCTS_DIR; };
 		F810727B1AD038F200FFE13E /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		F810727D1AD0391E00FFE13E /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		F810727F1AD0392600FFE13E /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
-		F81072811AD0666800FFE13E /* libGLEW.1.10.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libGLEW.1.10.0.dylib; path = glew/1.10.0/lib/libGLEW.1.10.0.dylib; sourceTree = "<group>"; };
-		F81072831AD0690C00FFE13E /* libglfw3.3.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libglfw3.3.1.dylib; path = glfw3/3.1/lib/libglfw3.3.1.dylib; sourceTree = "<group>"; };
+		F824BDF81B6EA73D0065EADF /* libGLEW.1.10.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libGLEW.1.10.0.dylib; path = ../glew/1.10.0/lib/libGLEW.1.10.0.dylib; sourceTree = "<group>"; };
+		F824BDFA1B6EA7520065EADF /* libglfw3.3.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libglfw3.3.1.dylib; path = ../glfw3/3.1/lib/libglfw3.3.1.dylib; sourceTree = "<group>"; };
 		F87C49401B6D1FB400176A46 /* Application.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Application.h; path = ../src/Application.h; sourceTree = "<group>"; };
 		F87C49411B6D1FB400176A46 /* Cube.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Cube.cpp; path = ../src/Cube.cpp; sourceTree = "<group>"; };
 		F87C49421B6D1FB400176A46 /* Cube.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Cube.h; path = ../src/Cube.h; sourceTree = "<group>"; };
@@ -65,11 +65,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F81072841AD0690C00FFE13E /* libglfw3.3.1.dylib in Frameworks */,
-				F81072821AD0666800FFE13E /* libGLEW.1.10.0.dylib in Frameworks */,
+				F824BDF91B6EA73D0065EADF /* libGLEW.1.10.0.dylib in Frameworks */,
 				F81072801AD0392600FFE13E /* GLUT.framework in Frameworks */,
 				F810727E1AD0391E00FFE13E /* Cocoa.framework in Frameworks */,
 				F810727C1AD038F200FFE13E /* OpenGL.framework in Frameworks */,
+				F824BDFB1B6EA7520065EADF /* libglfw3.3.1.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -79,11 +79,10 @@
 		F81072681AD036C000FFE13E = {
 			isa = PBXGroup;
 			children = (
+				F824BDFC1B6EA79B0065EADF /* Libraries */,
 				F87C494F1B6D1FBF00176A46 /* Source */,
 				F88005DA1B6C88DD006263CB /* Resource */,
 				F81072721AD036C000FFE13E /* Products */,
-				F81072831AD0690C00FFE13E /* libglfw3.3.1.dylib */,
-				F81072811AD0666800FFE13E /* libGLEW.1.10.0.dylib */,
 				F810727F1AD0392600FFE13E /* GLUT.framework */,
 				F810727D1AD0391E00FFE13E /* Cocoa.framework */,
 				F810727B1AD038F200FFE13E /* OpenGL.framework */,
@@ -93,9 +92,18 @@
 		F81072721AD036C000FFE13E /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F81072711AD036C000FFE13E /* cg_graphics */,
+				F81072711AD036C000FFE13E /* cg_programming_II */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		F824BDFC1B6EA79B0065EADF /* Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				F824BDFA1B6EA7520065EADF /* libglfw3.3.1.dylib */,
+				F824BDF81B6EA73D0065EADF /* libGLEW.1.10.0.dylib */,
+			);
+			name = Libraries;
 			sourceTree = "<group>";
 		};
 		F87C494F1B6D1FBF00176A46 /* Source */ = {
@@ -148,7 +156,7 @@
 			);
 			name = cg_programming_II;
 			productName = cg_graphics;
-			productReference = F81072711AD036C000FFE13E /* cg_graphics */;
+			productReference = F81072711AD036C000FFE13E /* cg_programming_II */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
@@ -287,17 +295,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					$SRCROOT/glew/1.10.0/include,
-					$SRCROOT/glfw3/3.1/include,
-					$SRCROOT/glm/0.9.5.4/include,
+					$PROJECT_DIR/../glew/1.10.0/include,
+					$PROJECT_DIR/../glfw3/3.1/include,
+					$PROJECT_DIR/../glm/0.9.5.4/include,
 				);
 				LIBRARY_SEARCH_PATHS = (
-					$SRCROOT/glew/1.10.0/lib,
-					$SRCROOT/glfw3/3.1/lib,
-					"$(PROJECT_DIR)/glew/1.10.0/lib",
-					"$(PROJECT_DIR)/glfw3/3.1/lib",
+					$PROJECT_DIR/../glew/1.10.0/lib,
+					$PROJECT_DIR/../glfw3/3.1/lib,
+					/Users/ODEN/Projects/cg_programming_II/glew/1.10.0/lib,
+					/Users/ODEN/Projects/cg_programming_II/glfw3/3.1/lib,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				USER_HEADER_SEARCH_PATHS = ../Declaration;
@@ -308,17 +314,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					$SRCROOT/glew/1.10.0/include,
-					$SRCROOT/glfw3/3.1/include,
-					$SRCROOT/glm/0.9.5.4/include,
+					$PROJECT_DIR/../glew/1.10.0/include,
+					$PROJECT_DIR/../glfw3/3.1/include,
+					$PROJECT_DIR/../glm/0.9.5.4/include,
 				);
 				LIBRARY_SEARCH_PATHS = (
-					$SRCROOT/glew/1.10.0/lib,
-					$SRCROOT/glfw3/3.1/lib,
-					"$(PROJECT_DIR)/glew/1.10.0/lib",
-					"$(PROJECT_DIR)/glfw3/3.1/lib",
+					$PROJECT_DIR/../glew/1.10.0/lib,
+					$PROJECT_DIR/../glfw3/3.1/lib,
+					/Users/ODEN/Projects/cg_programming_II/glew/1.10.0/lib,
+					/Users/ODEN/Projects/cg_programming_II/glfw3/3.1/lib,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				USER_HEADER_SEARCH_PATHS = ../Declaration;

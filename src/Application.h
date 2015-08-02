@@ -30,7 +30,7 @@ using namespace glm; //For openGL mathematics
 using namespace std; //If we want to print stuff
 
 //Defines…
-#define APP_NAME "<<Getting Started!>>"
+#define APP_NAME "cg programming II"
 #define RESOURCE_PATH "resource/"
 #define EXIT_WITH_ERROR -1
 #define EXIT_WITH_SUCCESS 0
