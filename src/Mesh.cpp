@@ -34,6 +34,20 @@ void Mesh::BuildMesh(const char* objName){
         glGenBuffers(1, &mVertexBufferID);
         glBindBuffer(GL_ARRAY_BUFFER, mVertexBufferID);
         glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec3), &vertices[0], GL_STATIC_DRAW);
+
+		size_t uvSize = uvs.size(), normSize = normals.size();
+
+		if(uvSize > 0){
+			glGenBuffers(1, &mUvID);
+			glBindBuffer(GL_ARRAY_BUFFER, mUvID);
+			glBufferData(GL_ARRAY_BUFFER, uvSize * sizeof(glm::vec2), &uvs[0], GL_STATIC_DRAW);
+		}
+
+		if(normSize > 0){
+			glGenBuffers(1, &mNormID);
+			glBindBuffer(GL_ARRAY_BUFFER, mNormID);
+			glBufferData(GL_ARRAY_BUFFER, normSize * sizeof(glm::vec3), &normals[0], GL_STATIC_DRAW);
+		}
     }
 };
 

@@ -26,32 +26,49 @@ int main(){
         programIds[i] = LoadShaders(vertShaders[i].c_str(), fragShaders[i].c_str());
     }
     
-    GLuint activeProgramId = programIds[0];
+    GLuint activeProgramId = programIds[1];
     glUseProgram(activeProgramId);
 
-	Camera camera;
+	Camera camera(0.0f, 0.0f, -6.0f, 3.0f /*move speed*/);
 	float aspectRatio = SCREEN_WIDTH/(float)SCREEN_HEIGHT;
 	camera.MVPMatrixID = glGetUniformLocation(activeProgramId, "MVP");
 	camera.projectionMatrix = perspective(FIELD_OF_VIEW, aspectRatio, Z_NEAR, Z_FAR);
 
 	World world;
 
-	#if 0	//Set to 1 to render lines...
-		glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
-	#endif
+	/*	//Keep this around for reference...
+		glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );			//Render lines...
+		glEnable( GL_TEXTURE_2D );								//Forgot what this does :P
+		glEnable(GL_CULL_FACE);									//Enables polygon culling...
+		glCullFace(GL_BACK);									//Cull back face...
+		glEnable(GL_DEPTH_TEST);								//Fixes rendering order issues...
+		glEnable(GL_BLEND);										//Allows transparency. Blends forground and background colors...
+		glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );	//How you want blending to happen...
+	*/
+
+	//Fixes issue with rendering order...
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
 
 	do{
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 		//Getting delta time...
 		float deltaTime = (float)getDeltaTime();
 
+		UpdateKeys(window);
+		camera.xPos += deltaTime * camera.moveSpeed * gKeyA;
+		camera.xPos -= deltaTime * camera.moveSpeed * gKeyD;
+		camera.zPos -= deltaTime * camera.moveSpeed * gKeyS;
+		camera.zPos += deltaTime * camera.moveSpeed * gKeyW;
+
 		// Camera matrix
 		camera.viewMatrix = lookAt(
-			vec3(0,0,3), // Camera is at (4,3,3), in World Space
-			vec3(0,0,0), // and looks at the origin
+			vec3(camera.xPos, camera.yPos, camera.zPos), // Camera position in World Space
+			vec3(camera.xPos, camera.yPos, camera.zPos + 1), // and looks at the origin
 			vec3(0,1,0)  // Head is up (set to 0,-1,0 to look upside-down)
 		);
+
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		world.Update(deltaTime);
 		world.Render(camera);

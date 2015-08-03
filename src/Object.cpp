@@ -3,7 +3,7 @@
 Object::Object(){
 	mObjectState = nullptr;
 	mRenderMode = GL_TRIANGLES;
-	mVertexBufferID = 0;
+	mVertexBufferID = mUvID = mNormID = 0;
 	mNumIndices = 6;
     mPosition = vec3(0, 0, 0);
     mScale = vec3(1, 1, 1);
@@ -42,7 +42,7 @@ void Object::Update(const float& deltaTime){
 }
 
 void Object::Render(const Camera& camera){
-	mat4 modelMatrix = Render();
+	mat4 modelMatrix = BeforeRender();
 	mat4 MVPMatrix = camera.projectionMatrix * camera.viewMatrix * modelMatrix;
 
 	glUniformMatrix4fv(camera.MVPMatrixID, 1, GL_FALSE, &MVPMatrix[0][0]);
@@ -139,10 +139,11 @@ GLuint Object::LoadBMP(const char * imagepath){
 	return mTextureID;
 }
 
-mat4 Object::Render(){
+mat4 Object::BeforeRender(){
 	glEnableVertexAttribArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, mVertexBufferID);
 
+	//Setting up vertices...
 	glVertexAttribPointer(
 		0,			//attribute layout
 		3,			//Elements in array
@@ -152,23 +153,41 @@ mat4 Object::Render(){
 		(void*)0	//Array buffer offset...
 	);
 
-	//Rendering UVs...
-	glEnableVertexAttribArray(1);
-	glBindBuffer(GL_ARRAY_BUFFER, mUvID);
+	if(mUvID > 0){
+		//Setting up uvs...
+		glEnableVertexAttribArray(1);
+		glBindBuffer(GL_ARRAY_BUFFER, mUvID);
 
-	glVertexAttribPointer(
-		1,			//attribute layout
-		2,			//Elements in array
-		GL_FLOAT,	//Each element is of type float
-		GL_FALSE,	//Normalized?
-		0,			//Stride...
-		(void*)0	//Array buffer offset...
-	);
+		glVertexAttribPointer(
+			1,			//attribute layout
+			2,			//Elements in array
+			GL_FLOAT,	//Each element is of type float
+			GL_FALSE,	//Normalized?
+			0,			//Stride...
+			(void*)0	//Array buffer offset...
+		);
+	}
+
+	if(mNormID > 0){
+		//Setting up normals...
+		glEnableVertexAttribArray(2);
+		glBindBuffer(GL_ARRAY_BUFFER, mNormID);
+
+		glVertexAttribPointer(
+			2,			//attribute layout
+			3,			//Elements in array
+			GL_FLOAT,	//Each element is of type float
+			GL_FALSE,	//Normalized?
+			0,			//Stride...
+			(void*)0	//Array buffer offset...
+		);
+	}
 
 	glDrawArrays(mRenderMode, 0, mNumIndices);	//GL_TRIANGLE_STRIP or GL_TRIANGLES
 
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
+	glDisableVertexAttribArray(2);
 
 	//Every object starts off with an identity matrix...
 	/*mat4 objectMatrix = mat4(1.0f);

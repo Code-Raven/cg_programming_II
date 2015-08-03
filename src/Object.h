@@ -25,13 +25,13 @@ class Object{
 
 	protected:
 		void BuildCube();
-        mat4 Render();
+        mat4 BeforeRender();
     
     //Members…
     protected:
 		Object* mObjectState;
 		vec3 mPosition, mScale, mRotAxis;
 		float mRotSpeed, mRotAngle;
-		GLuint mTextureID, mUvID;
-		GLuint mNumIndices, mNumUVs, mVertexBufferID, mRenderMode;
+		GLuint mVertexBufferID, mUvID, mNormID;
+		GLuint mNumIndices, mNumUVs, mTextureID, mRenderMode;
 };

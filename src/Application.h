@@ -33,6 +33,8 @@
 //GLFW provides window creation and input control.
 #include <glfw3.h>
 
+#include "Input.h"
+
 #pragma once
 
 //Namespaces…
@@ -66,8 +68,13 @@ typedef vector<unsigned int> stdVecUInt;
 extern GLFWwindow* window;
 
 struct Camera{
+	Camera(float xPos, float yPos, float zPos, float moveSpeed) :
+		xPos(xPos), yPos(yPos), zPos(zPos), moveSpeed(moveSpeed){}
+
 	GLuint MVPMatrixID;
 	mat4 projectionMatrix, viewMatrix, MVPMatrix;
+	float xPos, yPos, zPos;
+	float moveSpeed;
 };
 
 namespace setup

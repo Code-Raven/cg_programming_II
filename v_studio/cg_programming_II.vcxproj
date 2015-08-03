@@ -18,6 +18,7 @@
     <ClInclude Include="..\src\Application.h" />
     <ClInclude Include="..\src\Cube.h" />
     <ClInclude Include="..\src\dirent.h" />
+    <ClInclude Include="..\src\Input.h" />
     <ClInclude Include="..\src\Mesh.h" />
     <ClInclude Include="..\src\Object.h" />
     <ClInclude Include="..\src\Plane.h" />
@@ -26,6 +27,7 @@
   <ItemGroup>
     <ClCompile Include="..\src\Application.cpp" />
     <ClCompile Include="..\src\Cube.cpp" />
+    <ClCompile Include="..\src\Input.cpp" />
     <ClCompile Include="..\src\main.cpp" />
     <ClCompile Include="..\src\Mesh.cpp" />
     <ClCompile Include="..\src\Object.cpp" />
