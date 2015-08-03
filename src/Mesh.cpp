@@ -73,30 +73,43 @@ bool Mesh::loadOBJ(cCharPtr path, stdVec3 &out_vertices, stdVec2 &out_uvs, stdVe
             std::string vertex1, vertex2, vertex3;
             unsigned int vertexIndex[3], uvIndex[3], normalIndex[3];
             int matches = fscanf(file, "%d/%d/%d %d/%d/%d %d/%d/%d\n", &vertexIndex[0], &uvIndex[0], &normalIndex[0], &vertexIndex[1], &uvIndex[1], &normalIndex[1], &vertexIndex[2], &uvIndex[2], &normalIndex[2] );
-            if (matches != 9){
-                printf("File can't be read by our simple parser : ( Try exporting with other options\n");
+            
+			if(matches % 3 != 0 || matches < 3){
+				printf("File can't be read by our simple parser : ( Try exporting with other options\n");
                 return false;
-            }
-            
-            vertexIndices.push_back(vertexIndex[0]);
-            vertexIndices.push_back(vertexIndex[1]);
-            vertexIndices.push_back(vertexIndex[2]);
-            
-            uvIndices.push_back(uvIndex[0]);
+			}
+
+			vertexIndices.push_back(vertexIndex[0]);
+			vertexIndices.push_back(vertexIndex[1]);
+			vertexIndices.push_back(vertexIndex[2]);
+
+			if(matches < 6){
+				continue;
+			}
+
+			uvIndices.push_back(uvIndex[0]);
             uvIndices.push_back(uvIndex[1]);
             uvIndices.push_back(uvIndex[2]);
-            
-            normalIndices.push_back(normalIndex[0]);
+
+			if(matches < 9){
+				continue;
+			}
+
+			normalIndices.push_back(normalIndex[0]);
             normalIndices.push_back(normalIndex[1]);
             normalIndices.push_back(normalIndex[2]);
         }
     }
     
     // For each vertex of each triangle
-    for(unsigned int i=0; i<vertexIndices.size(); ++i){
+	for(unsigned int i=0, uvSize = uvIndices.size(), normSize = normalIndices.size(); i<vertexIndices.size(); ++i){
         out_vertices.push_back(temp_vertices[vertexIndices[i] - 1]);
-        out_uvs.push_back(temp_uvs[uvIndices[i] - 1]);
-        out_normals.push_back(temp_normals[normalIndices[i] - 1]);
+
+		if(uvSize > 0)
+			out_uvs.push_back(temp_uvs[uvIndices[i] - 1]);
+
+		if(normSize > 0)
+			out_normals.push_back(temp_normals[normalIndices[i] - 1]);
     }
     
     //TODO: don't hard code this
