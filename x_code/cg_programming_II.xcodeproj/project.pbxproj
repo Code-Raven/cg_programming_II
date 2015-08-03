@@ -10,6 +10,7 @@
 		F810727C1AD038F200FFE13E /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F810727B1AD038F200FFE13E /* OpenGL.framework */; };
 		F810727E1AD0391E00FFE13E /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F810727D1AD0391E00FFE13E /* Cocoa.framework */; };
 		F81072801AD0392600FFE13E /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F810727F1AD0392600FFE13E /* GLUT.framework */; };
+		F81A03B41B6F5AB8009A0AAF /* Input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F81A03B21B6F5AB8009A0AAF /* Input.cpp */; };
 		F824BDF91B6EA73D0065EADF /* libGLEW.1.10.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F824BDF81B6EA73D0065EADF /* libGLEW.1.10.0.dylib */; };
 		F824BDFB1B6EA7520065EADF /* libglfw3.3.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F824BDFA1B6EA7520065EADF /* libglfw3.3.1.dylib */; };
 		F87C494A1B6D1FB400176A46 /* Cube.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F87C49411B6D1FB400176A46 /* Cube.cpp */; };
@@ -38,6 +39,8 @@
 		F810727B1AD038F200FFE13E /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		F810727D1AD0391E00FFE13E /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		F810727F1AD0392600FFE13E /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
+		F81A03B21B6F5AB8009A0AAF /* Input.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Input.cpp; path = ../src/Input.cpp; sourceTree = "<group>"; };
+		F81A03B31B6F5AB8009A0AAF /* Input.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Input.h; path = ../src/Input.h; sourceTree = "<group>"; };
 		F824BDF81B6EA73D0065EADF /* libGLEW.1.10.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libGLEW.1.10.0.dylib; path = ../glew/1.10.0/lib/libGLEW.1.10.0.dylib; sourceTree = "<group>"; };
 		F824BDFA1B6EA7520065EADF /* libglfw3.3.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libglfw3.3.1.dylib; path = ../glfw3/3.1/lib/libglfw3.3.1.dylib; sourceTree = "<group>"; };
 		F87C49401B6D1FB400176A46 /* Application.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Application.h; path = ../src/Application.h; sourceTree = "<group>"; };
@@ -114,6 +117,8 @@
 		F87C494F1B6D1FBF00176A46 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				F81A03B21B6F5AB8009A0AAF /* Input.cpp */,
+				F81A03B31B6F5AB8009A0AAF /* Input.h */,
 				F87C49401B6D1FB400176A46 /* Application.h */,
 				F87C49411B6D1FB400176A46 /* Cube.cpp */,
 				F87C49421B6D1FB400176A46 /* Cube.h */,
@@ -206,6 +211,7 @@
 			files = (
 				F87C494B1B6D1FB400176A46 /* main.cpp in Sources */,
 				F87C494E1B6D1FB400176A46 /* World.cpp in Sources */,
+				F81A03B41B6F5AB8009A0AAF /* Input.cpp in Sources */,
 				F87C49511B6D242400176A46 /* Application.cpp in Sources */,
 				F8FE4D551B6ED2A000371851 /* Mesh.cpp in Sources */,
 				F87C494A1B6D1FB400176A46 /* Cube.cpp in Sources */,
