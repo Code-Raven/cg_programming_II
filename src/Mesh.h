@@ -9,7 +9,7 @@ typedef const char* cCharPtr;
 class Mesh : public Object{
     
 public:
-    Mesh() = default;
+	Mesh(){}
     Mesh(const char* objName);
     virtual ~Mesh();
     

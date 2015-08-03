@@ -6,7 +6,7 @@
 class Plane : public Object{
 
 	public:
-        Plane() = default;
+		Plane(){}
 		Plane(GLuint width, GLuint height);
 		virtual ~Plane();
     

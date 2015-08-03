@@ -5,10 +5,10 @@ Object::Object(){
 	mRenderMode = GL_TRIANGLES;
 	mVertexBufferID = 0;
 	mNumIndices = 6;
-    mPosition = {0, 0, 0};
-    mScale = {1, 1, 1};
-    mRotAxis = {0, 1, 0};
-	mNumUVs = mTextureID = mRotSpeed = mRotAngle = 0;
+    mPosition = vec3(0, 0, 0);
+    mScale = vec3(1, 1, 1);
+    mRotAxis = vec3(0, 1, 0);
+	mNumUVs = mTextureID = mRotSpeed = mRotAngle = (GLuint)0;
 }
 
 Object::~Object(){
