@@ -1,14 +1,14 @@
 #include "Object.h"
 
 Object::Object(){
-	objectState = nullptr;
-	renderMode = GL_TRIANGLES;
-	vertexBufferID = 0;
-	numIndices = 6;
-    position = {0, 0, 0};
-    scale = {1, 1, 1};
-	numUVs = textureID = rotSpeed = rotAngle = 0;
-    leftX = rightX = topY = bottomY = 0;
+	mObjectState = nullptr;
+	mRenderMode = GL_TRIANGLES;
+	mVertexBufferID = 0;
+	mNumIndices = 6;
+    mPosition = {0, 0, 0};
+    mScale = {1, 1, 1};
+    mRotAxis = {0, 1, 0};
+	mNumUVs = mTextureID = mRotSpeed = mRotAngle = 0;
 }
 
 Object::~Object(){
@@ -16,39 +16,29 @@ Object::~Object(){
 }
 
 void Object::SetPosition(vec3 position){
-	this->position = position;
+	mPosition = position;
 }
 
 void Object::SetScale(vec3 scale){
-	this->scale = scale;
+	mScale = scale;
+}
+
+void Object::Rotate(float rotAngle, vec3 rotAxis){
+    mRotAngle = rotAngle;
+    mRotAxis = rotAxis;
+}
+
+void Object::RotateOverTime(float rotSpeed, vec3 rotAxis){
+    mRotSpeed = rotSpeed;
+    mRotAxis = rotAxis;
 }
 
 vec3 Object::GetPosition(){
-	return position;
-}
-
-float Object::GetLeftX(){
-	return leftX;
-}
-
-float Object::GetRightX(){
-	return rightX;
-}
-
-float Object::GetTopY(){
-	return topY;
-}
-
-float Object::GetBottomY(){
-	return bottomY;
+	return mPosition;
 }
 
 void Object::Update(const float& deltaTime){
-	leftX = position.x - scale.x;
-	rightX = position.x + scale.x;
-	topY = position.y + scale.y;
-	bottomY = position.y - scale.y;
-	rotAngle += rotSpeed * deltaTime;
+	mRotAngle += mRotSpeed * deltaTime;
 }
 
 void Object::Render(const Camera& camera){
@@ -59,15 +49,15 @@ void Object::Render(const Camera& camera){
 }
 
 void Object::SaveObjectState(char *message){
-	if(!objectState)
-		objectState = (Object*)malloc(sizeof(*this));
+	if(!mObjectState)
+		mObjectState = (Object*)malloc(sizeof(*this));
 
-	*objectState = *this;
+	*mObjectState = *this;
 	puts(message);
 }
 
 void Object::LoadObjectState(char *message){
-	*this = *objectState;
+	*this = *mObjectState;
 	puts(message);
 }
 
@@ -82,14 +72,18 @@ GLuint Object::LoadBMP(const char * imagepath){
 	// Open the file
 	const char* mode = "rb";
     
+    char path[128];
+    strcpy (path, RESOURCE_PATH);
+    strcat (path, imagepath);
+    
     #ifdef _WIN32	//keep windows from complaining…
         FILE * file = nullptr;
-        if(fopen_s(&file, imagepath, mode)){
+        if(fopen_s(&file, path, mode)){
             printf("File could not be opened\n");
             return 0;
         }
     #else
-        FILE * file = fopen(imagepath, mode);
+        FILE * file = fopen(path, mode);
     #endif
     
 	if (!file){
@@ -131,10 +125,10 @@ GLuint Object::LoadBMP(const char * imagepath){
 	fclose(file);
 
 	// Create one OpenGL texture
-	glGenTextures(1, &textureID);
+	glGenTextures(1, &mTextureID);
  
 	// "Bind" the newly created texture : all future texture functions will modify this texture
-	glBindTexture(GL_TEXTURE_2D, textureID);
+	glBindTexture(GL_TEXTURE_2D, mTextureID);
  
 	// Give the image to OpenGL
 	glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, data);
@@ -142,12 +136,12 @@ GLuint Object::LoadBMP(const char * imagepath){
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
-	return textureID;
+	return mTextureID;
 }
 
 mat4 Object::Render(){
 	glEnableVertexAttribArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, vertexBufferID);
+	glBindBuffer(GL_ARRAY_BUFFER, mVertexBufferID);
 
 	glVertexAttribPointer(
 		0,			//attribute layout
@@ -160,7 +154,7 @@ mat4 Object::Render(){
 
 	//Rendering UVs...
 	glEnableVertexAttribArray(1);
-	glBindBuffer(GL_ARRAY_BUFFER, uvID);
+	glBindBuffer(GL_ARRAY_BUFFER, mUvID);
 
 	glVertexAttribPointer(
 		1,			//attribute layout
@@ -171,7 +165,7 @@ mat4 Object::Render(){
 		(void*)0	//Array buffer offset...
 	);
 
-	glDrawArrays(renderMode, 0, numIndices);	//GL_TRIANGLE_STRIP or GL_TRIANGLES
+	glDrawArrays(mRenderMode, 0, mNumIndices);	//GL_TRIANGLE_STRIP or GL_TRIANGLES
 
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
@@ -182,18 +176,16 @@ mat4 Object::Render(){
 	mat4 modelMatrix = translate(identityMatrix, position);*/
 
 	mat4 identityMatrix = mat4(1.0f);	//model in object space
-	mat4 scaleMatrix = glm::scale(identityMatrix, scale);
+	mat4 scaleMatrix = glm::scale(identityMatrix, mScale);
 
 	/*mat4 translateMatrix = glm::translate(scaleMatrix, position);
 	mat4 modelMatrix = glm::rotate(translateMatrix, rotAngle, vec3(0.0f, 1.0f, 0.0f));
 */
-	mat4 translateMatrix = glm::translate(identityMatrix, position);
-	mat4 rotationMatrix = glm::rotate(identityMatrix, rotAngle, vec3(0.0f, 1.0f, 0.0f));
+	mat4 translateMatrix = glm::translate(identityMatrix, mPosition);
+	mat4 rotationMatrix = glm::rotate(identityMatrix, mRotAngle, mRotAxis);
 	mat4 modelMatrix = translateMatrix * rotationMatrix * scaleMatrix * identityMatrix;
 
 	//(model in world space) = translateMatrix * scale * (model in object space)
 
 	return modelMatrix;
 }
-
-//static mat4 Render(GLuint vertexBuffer, const vec3& position, const vec3& scale);

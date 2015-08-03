@@ -1,14 +1,35 @@
 #include "Plane.h"
 
 Plane::Plane(GLuint width, GLuint height) : Object(){
-	BuildTriangles(this->width = width, this->height = height);
+    mLeftX = mRightX = mTopY = mBottomY = 0;
+	BuildTriangles(mWidth = width, mHeight = height);
 }
 
 Plane::~Plane(){
 	
 }
 
+void Plane::Update(const float& deltaTime){
+    
+    mLeftX = mPosition.x - mScale.x;
+    mRightX = mPosition.x + mScale.x;
+    mTopY = mPosition.y + mScale.y;
+    mBottomY = mPosition.y - mScale.y;
+    
+    Object::Update(deltaTime);
+}
+
 void Plane::BuildTriangles(const GLuint& perRow, const GLuint& perColumn){
+    
+    static bool built = false;
+    
+    if(built){
+        fprintf(stderr, "Failed to build triangles. Object already built!\n");
+        return;
+    }
+    
+    built = true;
+    
 	int numValuesPerRow = 18 * perRow;
 	int numValues = 18 * perRow * perColumn;
 
@@ -45,18 +66,18 @@ void Plane::BuildTriangles(const GLuint& perRow, const GLuint& perColumn){
 		}
 	}	
 
-	numUVs = numUvValues/2;
-	numIndices = numValues/3;
-	this->renderMode = GL_TRIANGLES;
+	mNumUVs = numUvValues/2;
+	mNumIndices = numValues/3;
+	mRenderMode = GL_TRIANGLES;
 	LoadTriangles(vertices, uvs);
 }
 
 void Plane::LoadTriangles(GLfloat *vertices, GLfloat *uvs){
-	glGenBuffers(1, &vertexBufferID);
-	glBindBuffer(GL_ARRAY_BUFFER, vertexBufferID);
-	glBufferData(GL_ARRAY_BUFFER, numIndices * 3 * sizeof(GLfloat), vertices, GL_STATIC_DRAW);
+	glGenBuffers(1, &mVertexBufferID);
+	glBindBuffer(GL_ARRAY_BUFFER, mVertexBufferID);
+	glBufferData(GL_ARRAY_BUFFER, mNumIndices * 3 * sizeof(GLfloat), vertices, GL_STATIC_DRAW);
 
-	glGenBuffers(1, &uvID);
-	glBindBuffer(GL_ARRAY_BUFFER, uvID);
-	glBufferData(GL_ARRAY_BUFFER, numUVs * 2 * sizeof(GLfloat), uvs, GL_STATIC_DRAW);
+	glGenBuffers(1, &mUvID);
+	glBindBuffer(GL_ARRAY_BUFFER, mUvID);
+	glBufferData(GL_ARRAY_BUFFER, mNumUVs * 2 * sizeof(GLfloat), uvs, GL_STATIC_DRAW);
 }

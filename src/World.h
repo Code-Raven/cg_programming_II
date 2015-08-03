@@ -1,6 +1,6 @@
-#include "Object.h"
 #include "Plane.h"
 #include "Cube.h"
+#include "Mesh.h"
 
 #pragma once
 
@@ -16,4 +16,5 @@ class World{
 	private:
 		Plane* plane;
 		Cube* cube;
+        Mesh* mesh;
 };

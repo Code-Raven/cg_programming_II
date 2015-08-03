@@ -14,12 +14,10 @@ class Object{
 
 		void SetPosition(vec3 position);
 		void SetScale(vec3 scale);
+        void Rotate(float rotAngle, vec3 rotAxis);
+        void RotateOverTime(float rotSpeed, vec3 rotAxis);
 
 		vec3 GetPosition();
-		float GetLeftX();
-		float GetRightX();
-		float GetTopY();
-		float GetBottomY();
 
 		void SaveObjectState(char *message = (char*)"Saved Object State");
 		void LoadObjectState(char *message = (char*)"Loaded Object State");
@@ -27,16 +25,13 @@ class Object{
 
 	protected:
 		void BuildCube();
+        mat4 Render();
     
     //Members…
     protected:
-		Object* objectState;
-		vec3 position, scale;
-
-	protected:
-		float leftX, rightX, topY, bottomY;
-		float rotSpeed, rotAngle;
-		mat4 Render();
-		GLuint textureID, uvID;
-		GLuint numIndices, numUVs, vertexBufferID, renderMode;
+		Object* mObjectState;
+		vec3 mPosition, mScale, mRotAxis;
+		float mRotSpeed, mRotAngle;
+		GLuint mTextureID, mUvID;
+		GLuint mNumIndices, mNumUVs, mVertexBufferID, mRenderMode;
 };

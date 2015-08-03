@@ -1,9 +1,8 @@
 #include "Cube.h"
 
 Cube::Cube() : Object(){
-	//BuildTriangleStrip(this->width = width, this->height = height);
 	BuildCube();
-	rotSpeed = 1;
+	mRotSpeed = 1;
 }
 
 Cube::~Cube(){
@@ -11,6 +10,16 @@ Cube::~Cube(){
 }
 
 void Cube::BuildCube(){
+    
+    static bool built = false;
+    
+    if(built){
+        fprintf(stderr, "Failed to build triangles. Object already built!\n");
+        return;
+    }
+    
+    built = true;
+    
 	static const GLfloat vertices[] = {
 		-1.0f,-1.0f,-1.0f, // triangle 1 : begin
 		-1.0f,-1.0f, 1.0f,
@@ -50,11 +59,11 @@ void Cube::BuildCube(){
 		1.0f,-1.0f, 1.0f
 	};
 
-	this->renderMode = GL_TRIANGLES;
+	mRenderMode = GL_TRIANGLES;
 
-	this->numIndices = 36;
+	mNumIndices = 36;
 
-	glGenBuffers(1, &vertexBufferID);
-	glBindBuffer(GL_ARRAY_BUFFER, vertexBufferID);
+	glGenBuffers(1, &mVertexBufferID);
+	glBindBuffer(GL_ARRAY_BUFFER, mVertexBufferID);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 }
