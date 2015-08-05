@@ -124,7 +124,8 @@ bool Mesh::loadOBJ(cCharPtr path, stdVec3 &out_vertices, stdVec2 &out_uvs, stdVe
 	}
     
     // For each vertex of each triangle
-	for(unsigned int i=0, uvSize = uvIndices.size(), normSize = normalIndices.size(); i<vertexIndices.size(); ++i){
+	for(unsigned int i=0, uvSize = (unsigned int)uvIndices.size(),
+        normSize = (unsigned int)normalIndices.size(); i<vertexIndices.size(); ++i){
         out_vertices.push_back(temp_vertices[vertexIndices[i] - 1]);
 
 		if(uvSize > 0)

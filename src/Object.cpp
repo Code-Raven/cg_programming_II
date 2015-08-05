@@ -46,6 +46,12 @@ void Object::Render(const Camera& camera){
 	mat4 MVPMatrix = camera.projectionMatrix * camera.viewMatrix * modelMatrix;
 
 	glUniformMatrix4fv(camera.MVPMatrixID, 1, GL_FALSE, &MVPMatrix[0][0]);
+    
+    glDrawArrays(mRenderMode, 0, mNumIndices);	//GL_TRIANGLE_STRIP or GL_TRIANGLES
+    
+    glDisableVertexAttribArray(0);
+    glDisableVertexAttribArray(1);
+    glDisableVertexAttribArray(2);
 }
 
 void Object::SaveObjectState(char *message){
@@ -183,11 +189,11 @@ mat4 Object::BeforeRender(){
 		);
 	}
 
-	glDrawArrays(mRenderMode, 0, mNumIndices);	//GL_TRIANGLE_STRIP or GL_TRIANGLES
-
-	glDisableVertexAttribArray(0);
-	glDisableVertexAttribArray(1);
-	glDisableVertexAttribArray(2);
+//	glDrawArrays(mRenderMode, 0, mNumIndices);	//GL_TRIANGLE_STRIP or GL_TRIANGLES
+//
+//	glDisableVertexAttribArray(0);
+//	glDisableVertexAttribArray(1);
+//	glDisableVertexAttribArray(2);
 
 	//Every object starts off with an identity matrix...
 	/*mat4 objectMatrix = mat4(1.0f);

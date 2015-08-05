@@ -2,7 +2,6 @@
 
 Cube::Cube() : Object(){
 	BuildCube();
-	mRotSpeed = 1;
 }
 
 Cube::~Cube(){

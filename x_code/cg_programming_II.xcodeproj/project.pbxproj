@@ -62,6 +62,8 @@
 		F88005E51B6C9217006263CB /* basic.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = basic.vert; path = ../resource/basic.vert; sourceTree = "<group>"; };
 		F88005E71B6C9217006263CB /* texture.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = texture.frag; path = ../resource/texture.frag; sourceTree = "<group>"; };
 		F88005E81B6C9217006263CB /* texture.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = texture.vert; path = ../resource/texture.vert; sourceTree = "<group>"; };
+		F892CF011B725DAD00EC87E7 /* cube.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = cube.obj; path = ../resource/cube.obj; sourceTree = "<group>"; };
+		F892CF021B725DAD00EC87E7 /* head.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = head.obj; path = ../resource/head.obj; sourceTree = "<group>"; };
 		F8FE4D501B6EC89100371851 /* TODO.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = TODO.txt; path = ../resource/TODO.txt; sourceTree = "<group>"; };
 		F8FE4D521B6ED1F700371851 /* bunny.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = bunny.obj; path = ../resource/bunny.obj; sourceTree = "<group>"; };
 		F8FE4D531B6ED2A000371851 /* Mesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Mesh.cpp; path = ../src/Mesh.cpp; sourceTree = "<group>"; };
@@ -139,6 +141,8 @@
 		F88005DA1B6C88DD006263CB /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				F892CF011B725DAD00EC87E7 /* cube.obj */,
+				F892CF021B725DAD00EC87E7 /* head.obj */,
 				F8FE4D521B6ED1F700371851 /* bunny.obj */,
 				F8FE4D501B6EC89100371851 /* TODO.txt */,
 				F88005E41B6C9217006263CB /* basic.frag */,
