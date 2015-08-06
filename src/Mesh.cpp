@@ -82,28 +82,53 @@ bool Mesh::loadOBJ(cCharPtr path, stdVec3 &out_vertices, stdVec2 &out_uvs, stdVe
             temp_normals.push_back(normal);
         }else if ( strcmp( lineHeader, "f" ) == 0 ){
             std::string vertex1, vertex2, vertex3;
-            unsigned int vertexIndex[3], uvIndex[3], normalIndex[3];
+            unsigned int vertexIndex[4], uvIndex[4], normalIndex[4];
+			bool isQuad = true;
 
-			int matches = sscanf(line, "%*s %d/%d/%d %d/%d/%d %d/%d/%d\n", &vertexIndex[0], &uvIndex[0], &normalIndex[0], &vertexIndex[1],
-				&uvIndex[1], &normalIndex[1], &vertexIndex[2], &uvIndex[2], &normalIndex[2] );
+			int matches = sscanf(line, "%*s %d/%d/%d %d/%d/%d %d/%d/%d %d/%d/%d\n", &vertexIndex[0], &uvIndex[0], &normalIndex[0], &vertexIndex[1],
+					&uvIndex[1], &normalIndex[1], &vertexIndex[2], &uvIndex[2], &normalIndex[2], &vertexIndex[3], &uvIndex[3], &normalIndex[3]);
+			
+			if(matches != 12){
+				matches = sscanf(line, "%*s %d/%d/%d %d/%d/%d %d/%d/%d\n", &vertexIndex[0], &uvIndex[0], &normalIndex[0], &vertexIndex[1],
+					&uvIndex[1], &normalIndex[1], &vertexIndex[2], &uvIndex[2], &normalIndex[2] );
+				isQuad = false;
 
-			if(matches != 9){
-				matches = sscanf(line, "%*s %d/%d %d/%d %d/%d\n", &vertexIndex[0], &uvIndex[0],
-					&vertexIndex[1], &uvIndex[1], &vertexIndex[2], &uvIndex[2]);
+				if(matches != 9){
+					matches = sscanf(line, "%*s %d/%d %d/%d %d/%d %d/%d\n", &vertexIndex[0], &uvIndex[0],
+						&vertexIndex[1], &uvIndex[1], &vertexIndex[2], &uvIndex[2], &vertexIndex[3], &uvIndex[3]);
+					isQuad = true;
 
-				if(matches != 6){
-					matches = sscanf(line, "%*s %d %d %d\n", &vertexIndex[0], &vertexIndex[1], &vertexIndex[2]);
+					if(matches != 8){
+						matches = sscanf(line, "%*s %d/%d %d/%d %d/%d\n", &vertexIndex[0], &uvIndex[0],
+							&vertexIndex[1], &uvIndex[1], &vertexIndex[2], &uvIndex[2]);
+						isQuad = false;
 
-					if(matches != 3){
-						printf("File can't be read by our simple parser : ( Try exporting with other options\n");
-						return false;
+						if(matches != 6){
+							matches = sscanf(line, "%*s %d %d %d %d\n", &vertexIndex[0], &vertexIndex[1], &vertexIndex[2], &vertexIndex[3]);
+							isQuad = true;
+
+							if(matches != 4){
+								matches = sscanf(line, "%*s %d %d %d\n", &vertexIndex[0], &vertexIndex[1], &vertexIndex[2]);
+								isQuad = false;
+
+								if(matches != 3){
+									printf("File can't be read by our simple parser : ( Try exporting with other options\n");
+									return false;
+								}
+							}
+						}
 					}
 				}
 			}
 
 			vertexIndices.push_back(vertexIndex[0]);
 			vertexIndices.push_back(vertexIndex[1]);
-			vertexIndices.push_back(vertexIndex[2]);
+			vertexIndices.push_back(vertexIndex[isQuad ? 3: 2]);
+			if(isQuad){
+				vertexIndices.push_back(vertexIndex[1]);
+				vertexIndices.push_back(vertexIndex[2]);
+				vertexIndices.push_back(vertexIndex[3]);
+			}
 
 			if(matches < 6){
 				continue;
@@ -111,7 +136,12 @@ bool Mesh::loadOBJ(cCharPtr path, stdVec3 &out_vertices, stdVec2 &out_uvs, stdVe
 
 			uvIndices.push_back(uvIndex[0]);
             uvIndices.push_back(uvIndex[1]);
-            uvIndices.push_back(uvIndex[2]);
+            uvIndices.push_back(uvIndex[isQuad ? 3: 2]);
+			if(isQuad){
+				uvIndices.push_back(uvIndex[1]);
+				uvIndices.push_back(uvIndex[2]);
+				uvIndices.push_back(uvIndex[3]);
+			}
 
 			if(matches < 9){
 				continue;
@@ -119,7 +149,12 @@ bool Mesh::loadOBJ(cCharPtr path, stdVec3 &out_vertices, stdVec2 &out_uvs, stdVe
 
 			normalIndices.push_back(normalIndex[0]);
             normalIndices.push_back(normalIndex[1]);
-            normalIndices.push_back(normalIndex[2]);
+            normalIndices.push_back(normalIndex[isQuad ? 3: 2]);
+			if(isQuad){
+				normalIndices.push_back(normalIndex[1]);
+				normalIndices.push_back(normalIndex[2]);
+				normalIndices.push_back(normalIndex[3]);
+			}
 		}
 	}
     
