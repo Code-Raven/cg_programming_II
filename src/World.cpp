@@ -14,7 +14,8 @@ World::World(){
     
     mesh = new Mesh[1];
 	//mesh[0].BuildMesh("bunny.obj");
-    mesh[0].BuildMesh("bunny_large.obj");
+    //mesh[0].BuildMesh("bunny_large.obj");
+	mesh[0].BuildMesh("head2.obj");
     mesh[0].SetPosition(vec3(0.0f, -1.5f, -2.0f));
     mesh[0].RotateOverTime(1.0f, vec3(0, 1, 0));
 
