@@ -14,7 +14,13 @@ World::World(){
     
     mesh = new Mesh[1];
 	//mesh[0].BuildMesh("bunny.obj");
-    mesh[0].BuildMesh("head.obj");
+	//mesh[0].BuildMesh("bunny_large.obj");
+	//mesh[0].BuildMesh("head.obj");
+	//mesh[0].BuildMesh("helix.obj");
+	//mesh[0].BuildMesh("sphere.obj");
+	//mesh[0].BuildMesh("arceus.obj");
+	mesh[0].BuildMesh("dialga.obj");
+    //mesh[0].BuildMesh("cube.obj");
     mesh[0].SetPosition(vec3(0.0f, -1.5f, -2.0f));
     mesh[0].RotateOverTime(1.0f, vec3(0, 1, 0));
 
@@ -23,6 +29,8 @@ World::World(){
 	//GLuint textureID = plane[0].LoadBMP("test.bmp");
 	//GLuint textureID = plane[0].LoadBMP("dirt.bmp");
 	//GLuint textureID = plane[0].LoadBMP("world.bmp");
+	//GLuint textureID = plane[0].LoadBMP("arceus.bmp");
+	GLuint textureID = plane[0].LoadBMP("dialga.bmp");
 }
 
 //TODO: Add functionality later...

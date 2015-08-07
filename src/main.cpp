@@ -29,7 +29,7 @@ int main(){
     GLuint activeProgramId = programIds[1];
     glUseProgram(activeProgramId);
 
-	Camera camera(0.0f, 0.0f, -6.0f, 3.0f /*move speed*/);
+	Camera camera(0.0f, 0.0f, -6.0f, 6.0f /*move speed*/);
 	float aspectRatio = SCREEN_WIDTH/(float)SCREEN_HEIGHT;
 	camera.MVPMatrixID = glGetUniformLocation(activeProgramId, "MVP");
 	camera.projectionMatrix = perspective(FIELD_OF_VIEW, aspectRatio, Z_NEAR, Z_FAR);
@@ -55,18 +55,47 @@ int main(){
 		//Getting delta time...
 		float deltaTime = (float)getDeltaTime();
 
-		UpdateKeys(window);
-		camera.xPos += deltaTime * camera.moveSpeed * gKeyA;
-		camera.xPos -= deltaTime * camera.moveSpeed * gKeyD;
-		camera.zPos -= deltaTime * camera.moveSpeed * gKeyS;
-		camera.zPos += deltaTime * camera.moveSpeed * gKeyW;
+		UpdateKeys(window);	//Camera vertical and horizontal transition...
+		UpdateMouse(window, deltaTime);
+		//camera.xPos += deltaTime * camera.moveSpeed * gKeyA;
+		//camera.xPos -= deltaTime * camera.moveSpeed * gKeyD;
+		//camera.zPos -= deltaTime * camera.moveSpeed * gKeyS;
+		//camera.zPos += deltaTime * camera.moveSpeed * gKeyW;
 
-		// Camera matrix
-		camera.viewMatrix = lookAt(
-			vec3(camera.xPos, camera.yPos, camera.zPos), // Camera position in World Space
-			vec3(camera.xPos, camera.yPos, camera.zPos + 1), // and looks at the origin
-			vec3(0,1,0)  // Head is up (set to 0,-1,0 to look upside-down)
+		//// Camera matrix
+		//camera.viewMatrix = lookAt(
+		//	vec3(camera.xPos, camera.yPos, camera.zPos), // Camera position in World Space
+		//	vec3(camera.xPos, camera.yPos, camera.zPos + 1), // and looks at the origin
+		//	vec3(0,1,0)  // Head is up (set to 0,-1,0 to look upside-down)
+		//);
+		// Direction : Spherical coordinates to Cartesian coordinates conversion
+		glm::vec3 forward(
+			cos(gMouseVertAngle) * sin(gMouseHorizAngle),
+			0,
+			sin(gMouseVertAngle) * cos(gMouseHorizAngle)
 		);
+
+		//glm::vec3 forward(
+		//	cos(gMouseVertAngle),
+		//	0,
+		//	sin(gMouseVertAngle)
+		//);
+
+		//// Right vector
+		glm::vec3 right(
+			sin(gMouseHorizAngle - HALF_PI),
+			0,
+			cos(gMouseHorizAngle - HALF_PI)
+		);
+
+		//glm::vec3 up = vec3(0, 1, 0);
+
+		//glm::vec3 right = glm::cross(up, forward);
+
+		glm::vec3 up = glm::cross(right, forward);
+
+
+		camera.Update(forward, right, up, deltaTime);
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 

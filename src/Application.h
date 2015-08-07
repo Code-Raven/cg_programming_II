@@ -53,6 +53,8 @@ using namespace std; //If we want to print stuff
 #define Z_NEAR 0.1f
 #define Z_FAR 100.0f
 #define GLFW_FAIL 0
+#define PI 3.14f
+#define HALF_PI 3.14f/2.0f
 
 #ifdef _WIN32
     #define RESOURCE_PATH "../resource/"
@@ -68,12 +70,47 @@ typedef vector<unsigned int> stdVecUInt;
 extern GLFWwindow* window;
 
 struct Camera{
-	Camera(float xPos, float yPos, float zPos, float moveSpeed) :
-		xPos(xPos), yPos(yPos), zPos(zPos), moveSpeed(moveSpeed){}
+	Camera(float xPos, float yPos, float zPos, float moveSpeed) : position(xPos, yPos, zPos),
+		forward(0.0f), right(0.0f), up(0.0f), moveSpeed(moveSpeed){}
+
+	void Update(glm::vec3 position){
+		this->position = position;
+		Update();
+	}
+
+	void Update(glm::vec3 forward, glm::vec3 right, glm::vec3 up, float deltaTime){
+		this->forward = forward;
+		this->right = right;
+		this->up = up;
+		Update(deltaTime);
+	}
+
+	void Update(float deltaTime){
+		//translating camera...
+		position += forward * (gKeyW * moveSpeed * deltaTime);
+		position -= forward * (gKeyS * moveSpeed * deltaTime);
+		position += right * (gKeyD * moveSpeed * deltaTime);
+		position -= right * (gKeyA * moveSpeed * deltaTime);
+
+		//camera.xPos += deltaTime * camera.moveSpeed * gKeyA;
+		//camera.xPos -= deltaTime * camera.moveSpeed * gKeyD;
+		//camera.zPos -= deltaTime * camera.moveSpeed * gKeyS;
+		//camera.zPos += deltaTime * camera.moveSpeed * gKeyW;
+
+		Update();
+	}
+
+	void Update(){
+		viewMatrix = lookAt(
+			position,			// Camera position in World Space
+			position + forward, // and looks at the origin
+			up					// Head is up (set to 0,-1,0 to look upside-down)
+		);
+	}
 
 	GLuint MVPMatrixID;
 	mat4 projectionMatrix, viewMatrix, MVPMatrix;
-	float xPos, yPos, zPos;
+	glm::vec3 position, forward, right, up;
 	float moveSpeed;
 };
 
