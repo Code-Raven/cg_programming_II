@@ -50,6 +50,10 @@ int main(){
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
+    
+    //HACK: so that we are not looking up in the air…
+    gMouseHorizAngle = HALF_PI;
+    gMouseVertAngle = HALF_PI;
 
 	do{
 		//Getting delta time...
@@ -57,50 +61,33 @@ int main(){
 
 		UpdateKeys(window);	//Camera vertical and horizontal transition...
 		UpdateMouse(window, deltaTime);
-		//camera.xPos += deltaTime * camera.moveSpeed * gKeyA;
-		//camera.xPos -= deltaTime * camera.moveSpeed * gKeyD;
-		//camera.zPos -= deltaTime * camera.moveSpeed * gKeyS;
-		//camera.zPos += deltaTime * camera.moveSpeed * gKeyW;
-
-		//// Camera matrix
-		//camera.viewMatrix = lookAt(
-		//	vec3(camera.xPos, camera.yPos, camera.zPos), // Camera position in World Space
-		//	vec3(camera.xPos, camera.yPos, camera.zPos + 1), // and looks at the origin
-		//	vec3(0,1,0)  // Head is up (set to 0,-1,0 to look upside-down)
-		//);
-		// Direction : Spherical coordinates to Cartesian coordinates conversion
-		glm::vec3 forward(
-			cos(gMouseVertAngle) * sin(gMouseHorizAngle),
-			0,
-			sin(gMouseVertAngle) * cos(gMouseHorizAngle)
-		);
-
-		//glm::vec3 forward(
-		//	cos(gMouseVertAngle),
-		//	0,
-		//	sin(gMouseVertAngle)
-		//);
-
-		//// Right vector
-		glm::vec3 right(
-			sin(gMouseHorizAngle - HALF_PI),
-			0,
-			cos(gMouseHorizAngle - HALF_PI)
-		);
-
-		//glm::vec3 up = vec3(0, 1, 0);
-
-		//glm::vec3 right = glm::cross(up, forward);
-
-		glm::vec3 up = glm::cross(right, forward);
-
-
-		camera.Update(forward, right, up, deltaTime);
-
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		world.Update(deltaTime);
-		world.Render(camera);
+            
+        //Let's keep gimblelock from happening…
+        gMouseVertAngle = glm::clamp(gMouseVertAngle, 0.1f, PI - 0.1f);
+        
+        //Spherical coordinates to cartesian coordinates conversion
+        glm::vec3 forward(
+            sin(gMouseVertAngle) * cos(gMouseHorizAngle),
+            cos(gMouseVertAngle),
+            sin(gMouseVertAngle) * sin(gMouseHorizAngle)
+        );
+        
+        //Subtracting 90 degrees in radians to create the up vector…
+        glm::vec3 up(
+            sin(gMouseVertAngle - HALF_PI) * cos(gMouseHorizAngle),
+            cos(gMouseVertAngle - HALF_PI),
+            sin(gMouseVertAngle - HALF_PI) * sin(gMouseHorizAngle)
+        );
+        
+        //And of course we need our right vector…
+        glm::vec3 right = glm::cross(up, forward);
+        
+        camera.Update(forward, right, up, deltaTime);
+        
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        
+        world.Update(deltaTime);
+        world.Render(camera);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();

@@ -79,9 +79,9 @@ struct Camera{
 	}
 
 	void Update(glm::vec3 forward, glm::vec3 right, glm::vec3 up, float deltaTime){
-		this->forward = forward;
-		this->right = right;
-		this->up = up;
+        this->forward = glm::normalize(forward);
+        this->right = glm::normalize(right);
+        this->up = glm::normalize(up);
 		Update(deltaTime);
 	}
 
@@ -89,13 +89,8 @@ struct Camera{
 		//translating camera...
 		position += forward * (gKeyW * moveSpeed * deltaTime);
 		position -= forward * (gKeyS * moveSpeed * deltaTime);
-		position += right * (gKeyD * moveSpeed * deltaTime);
-		position -= right * (gKeyA * moveSpeed * deltaTime);
-
-		//camera.xPos += deltaTime * camera.moveSpeed * gKeyA;
-		//camera.xPos -= deltaTime * camera.moveSpeed * gKeyD;
-		//camera.zPos -= deltaTime * camera.moveSpeed * gKeyS;
-		//camera.zPos += deltaTime * camera.moveSpeed * gKeyW;
+		position -= right * (gKeyD * moveSpeed * deltaTime);
+		position += right * (gKeyA * moveSpeed * deltaTime);
 
 		Update();
 	}
@@ -121,6 +116,7 @@ namespace setup
     GLuint LoadShaders(const char *vertex_file_path, const char *fragment_file_path);
     GLuint *LoadShaders(size_t &numShaders);
     int InitGlewFailed();
+    bool AfterTime(double time);
     double getDeltaTime();
     stdVecStr ReadFiles(const char* fExt);
 }

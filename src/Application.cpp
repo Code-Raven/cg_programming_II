@@ -35,6 +35,8 @@ int setup::InitWindowFailed(){
     //glfwSetWindowFocusCallback(window, windowFocusCallback);
     glfwSetWindowRefreshCallback(window, window_refresh_callback);
     
+    glfwSetCursorPos(window, SCREEN_WIDTH/2.0, SCREEN_HEIGHT/2.0);
+    
     return EXIT_WITH_SUCCESS;
 }
 
@@ -132,6 +134,12 @@ int setup::InitGlewFailed(){
     }
     
     return EXIT_WITH_SUCCESS;
+}
+
+bool setup::AfterTime(double time){
+    if(glfwGetTime() > time)
+        return true;
+    return false;
 }
 
 double setup::getDeltaTime(){

@@ -8,29 +8,49 @@ World::World(){
 	//plane[0].SetPosition(vec3(-1.0f, -1.0f, 0.0f));
 
 	cube = new Cube[1];
-	cube[0].SetScale(vec3(0.5f));
+	cube[0].SetScale(vec3(6.0f));
 	cube[0].SetPosition(vec3(0.0f, 1.0f, 0.0f));
     cube[0].Rotate(45, vec3(0.0f, 1.0f, 0.0f));
     
     mesh = new Mesh[1];
+    
+    
+    #define BUNNY_LARGE
+    
+    #ifdef BUNNY
+        mesh[0].BuildMesh("bunny.obj");
+        (void)mesh[0].LoadBMP("dirt.bmp");
+        mesh[0].SetScale(vec3(3.0f));
+    #endif
+    
+    #ifdef BUNNY_LARGE
+        mesh[0].BuildMesh("bunny_large.obj");
+        (void)mesh[0].LoadBMP("dirt.bmp");
+        mesh[0].SetPosition(vec3(0.0f, -3.0f, 0.0f));
+        mesh[0].SetScale(vec3(3.0f));
+    #endif
+    
+    #ifdef DIALGA
+        mesh[0].BuildMesh("dialga.obj");
+        (void)mesh[0].LoadBMP("dialga.bmp");
+        mesh[0].SetScale(vec3(0.1f));
+    #endif
+    
 	//mesh[0].BuildMesh("bunny.obj");
-	//mesh[0].BuildMesh("bunny_large.obj");
 	//mesh[0].BuildMesh("head.obj");
 	//mesh[0].BuildMesh("helix.obj");
 	//mesh[0].BuildMesh("sphere.obj");
 	//mesh[0].BuildMesh("arceus.obj");
-	mesh[0].BuildMesh("dialga.obj");
+	//mesh[0].BuildMesh("dialga.obj");
     //mesh[0].BuildMesh("cube.obj");
-    mesh[0].SetPosition(vec3(0.0f, -1.5f, -2.0f));
+    //mesh[0].SetPosition(vec3(0.0f, -1.5f, -2.0f));
     mesh[0].RotateOverTime(1.0f, vec3(0, 1, 0));
 
-	(void)mesh[0].LoadBMP("dirt.bmp");
-    (void)cube[0].LoadBMP("dirt.bmp");
+	//(void)mesh[0].LoadBMP("dialga.bmp");
 	//GLuint textureID = plane[0].LoadBMP("test.bmp");
 	//GLuint textureID = plane[0].LoadBMP("dirt.bmp");
 	//GLuint textureID = plane[0].LoadBMP("world.bmp");
 	//GLuint textureID = plane[0].LoadBMP("arceus.bmp");
-	GLuint textureID = plane[0].LoadBMP("dialga.bmp");
 }
 
 //TODO: Add functionality later...

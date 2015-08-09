@@ -3,11 +3,11 @@
 //global variables imlicitly get initialized to zero, so no need to set them! :)
 char gKeyA, gKeyW, gKeyD, gKeyS;
 glm::vec2 gMousePos, gMouseDelta;
-float gMouseHorizAngle , gMouseVertAngle;
+float gMouseHorizAngle, gMouseVertAngle;
 int gCursMode = GLFW_CURSOR_DISABLED;
 
 static void SetCursor(GLFWwindow *window, glm::vec2 &mousePos, int cursMode){
-	if(cursMode = GLFW_CURSOR_DISABLED){
+	if(cursMode == GLFW_CURSOR_DISABLED){
 		int winWidth, winHeight;
 		glfwGetWindowSize(window, &winWidth, &winHeight);
 
@@ -42,10 +42,16 @@ void UpdateKeys(GLFWwindow *window){
 		gCursMode = GLFW_CURSOR_DISABLED;
 }
 
+static bool AfterTime(double time){
+    if(glfwGetTime() > time)
+        return true;
+    return false;
+}
+
 //call glfwGetMousePos(&xpos, &ypos); and set.
 //set void glfwSetCursorPos ( GLFWwindow * window, double xpos, double ypos )
 void UpdateMouse(GLFWwindow *window, float deltaTime){
-
+    
 	int winWidth, winHeight;
 	double mousePosX, mousePosY;
 
@@ -53,13 +59,17 @@ void UpdateMouse(GLFWwindow *window, float deltaTime){
 	glfwGetCursorPos(window, &mousePosX, &mousePosY);
 
 	glm::vec2 newMousePos((float)mousePosX, (float)mousePosY);
-	gMouseDelta = newMousePos - gMousePos;
+	gMouseDelta = gMousePos - newMousePos;
 	gMousePos = newMousePos;
-
+    
 	// we ONLY want to compute the new orientation if the cursor is hidden...
 	if(gCursMode == GLFW_CURSOR_DISABLED){
-		gMouseHorizAngle -= gMouseDelta.y * deltaTime * MOUSE_SPEED;
-		gMouseVertAngle  += gMouseDelta.x * deltaTime * MOUSE_SPEED;
+        
+        //HACK: have to wait for glfwSetCursor to update, or else gMouseDelta will jump…
+        if(AfterTime(1)){
+            gMouseVertAngle -= gMouseDelta.y * deltaTime * MOUSE_SPEED;
+            gMouseHorizAngle -= gMouseDelta.x * deltaTime * MOUSE_SPEED;
+        }
 	}
 
 	SetCursor(window, gMousePos, gCursMode);
