@@ -26,7 +26,7 @@ int main(){
         programIds[i] = LoadShaders(vertShaders[i].c_str(), fragShaders[i].c_str());
     }
     
-    GLuint activeProgramId = programIds[1];
+    GLuint activeProgramId = programIds[2];
     glUseProgram(activeProgramId);
 
 	Camera camera(0.0f, 0.0f, -6.0f, 6.0f /*move speed*/);

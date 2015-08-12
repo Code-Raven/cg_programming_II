@@ -39,6 +39,8 @@
     <None Include="..\resource\basic.vert" />
     <None Include="..\resource\texture.frag" />
     <None Include="..\resource\texture.vert" />
+    <None Include="..\resource\toon.frag" />
+    <None Include="..\resource\toon.vert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\resource\dirt.bmp" />

@@ -78,6 +78,12 @@
     <None Include="..\resource\texture.vert">
       <Filter>_Resource</Filter>
     </None>
+    <None Include="..\resource\toon.frag">
+      <Filter>_Resource</Filter>
+    </None>
+    <None Include="..\resource\toon.vert">
+      <Filter>_Resource</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\resource\dirt.bmp">

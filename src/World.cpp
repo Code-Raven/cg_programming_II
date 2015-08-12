@@ -35,6 +35,7 @@ World::World(){
         (void)mesh[0].LoadBMP("dialga.bmp");
         mesh[0].SetScale(vec3(0.1f));
     #endif
+
     
 	//mesh[0].BuildMesh("bunny.obj");
 	//mesh[0].BuildMesh("head.obj");
@@ -75,7 +76,7 @@ void World::Update(const float& deltaTime){
 void World::Render(const Camera& camera){
 	//plane[0].Render(camera);
 	glCullFace(GL_FRONT);
-	cube[0].Render(camera);
+	//cube[0].Render(camera);
 
 	glCullFace(GL_BACK);
     mesh[0].Render(camera);
