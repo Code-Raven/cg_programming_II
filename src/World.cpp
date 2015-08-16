@@ -75,9 +75,57 @@ void World::Update(const float& deltaTime){
 
 void World::Render(const Camera& camera){
 	//plane[0].Render(camera);
-	glCullFace(GL_FRONT);
+	//glCullFace(GL_FRONT);
 	//cube[0].Render(camera);
 
+	/*glUseProgram(g_programIds[0]);
 	glCullFace(GL_BACK);
-    mesh[0].Render(camera);
+	mesh[0].Render(camera);*/
+
+	glCullFace(GL_BACK);
+
+	glClearStencil(0);
+	glClear(GL_STENCIL_BUFFER_BIT);
+
+	// Render the mesh into the stencil buffer.
+	
+	glEnable(GL_STENCIL_TEST);
+
+	glStencilFunc(GL_ALWAYS, 1, -1);
+	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+
+	glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+
+	glUseProgram(g_programIds[2]);
+	mesh[0].Render(camera);
+
+	// Render the thick wireframe version.
+
+	glStencilFunc(GL_NOTEQUAL, 1, -1);
+	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+
+	glLineWidth(10);
+	glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+	
+	glUseProgram(g_programIds[0]);
+	mesh[0].Render(camera);
+
+	////Push the GL attribute bits so that we don't wreck any settings
+	//glPushAttrib( GL_ALL_ATTRIB_BITS );
+	////Enable polygon offsets, and offset filled polygons forward by 2.5
+	//glEnable( GL_POLYGON_OFFSET_FILL );
+	//glPolygonOffset( -30.0f, -30.0f );	//TODO: read up on this later...
+
+	//glCullFace(GL_BACK);
+
+	//glUseProgram(g_programIds[0]);
+	//glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+	//glLineWidth(10.0f);
+	//mesh[0].Render(camera);
+
+	//glUseProgram(g_programIds[1]);
+	//glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+	//mesh[0].Render(camera);
+
+	//glPopAttrib();
 }

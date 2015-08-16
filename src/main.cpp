@@ -3,6 +3,8 @@
 
 using namespace setup;
 
+GLuint* g_programIds = nullptr;
+
 int main(){
 	if(InitWindowFailed() | InitGlewFailed()){
 		return EXIT_WITH_ERROR;
@@ -20,13 +22,13 @@ int main(){
     }
     
     size_t numShaders = vertShaders.size();
-    GLuint* programIds = (GLuint*)malloc(sizeof(GLuint) * numShaders);
+    g_programIds = (GLuint*)malloc(sizeof(GLuint) * numShaders);
     
     for(size_t i = 0; i < numShaders; ++i){
-        programIds[i] = LoadShaders(vertShaders[i].c_str(), fragShaders[i].c_str());
+        g_programIds[i] = LoadShaders(vertShaders[i].c_str(), fragShaders[i].c_str());
     }
     
-    GLuint activeProgramId = programIds[2];
+    GLuint activeProgramId = g_programIds[2];
     glUseProgram(activeProgramId);
 
 	Camera camera(0.0f, 0.0f, -6.0f, 6.0f /*move speed*/);

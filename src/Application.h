@@ -56,6 +56,8 @@ using namespace std; //If we want to print stuff
 #define PI 3.14f
 #define HALF_PI 3.14f/2.0f
 
+extern GLuint* g_programIds;
+
 #ifdef _WIN32
     #define RESOURCE_PATH "../resource/"
 #else
