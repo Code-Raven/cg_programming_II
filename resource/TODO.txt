@@ -21,3 +21,8 @@ NOTES:
 
 //For texture information...
 https://open.gl/textures
+
+
+Object
+    has material
+    

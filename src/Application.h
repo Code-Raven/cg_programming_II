@@ -105,8 +105,7 @@ struct Camera{
 		);
 	}
 
-	GLuint MVPMatrixID;
-	mat4 projectionMatrix, viewMatrix, MVPMatrix;
+	mat4 projectionMatrix, viewMatrix;
 	glm::vec3 position, forward, right, up;
 	float moveSpeed;
 };

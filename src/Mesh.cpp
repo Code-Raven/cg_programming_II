@@ -8,6 +8,14 @@ Mesh::~Mesh(void){
     
 }
 
+void Mesh::SaveObjectState(){
+    //TODO: implement…
+}
+
+void Mesh::LoadObjectState(){
+    //TODO: implement…
+}
+
 void Mesh::BuildMesh(const char* objName){
     
     static bool built = false;

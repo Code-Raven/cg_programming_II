@@ -33,7 +33,6 @@ int main(){
 
 	Camera camera(0.0f, 0.0f, -6.0f, 6.0f /*move speed*/);
 	float aspectRatio = SCREEN_WIDTH/(float)SCREEN_HEIGHT;
-	camera.MVPMatrixID = glGetUniformLocation(activeProgramId, "MVP");
 	camera.projectionMatrix = perspective(FIELD_OF_VIEW, aspectRatio, Z_NEAR, Z_FAR);
 
 	World world;

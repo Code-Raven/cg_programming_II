@@ -13,6 +13,7 @@
 		F81A03B41B6F5AB8009A0AAF /* Input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F81A03B21B6F5AB8009A0AAF /* Input.cpp */; };
 		F824BDF91B6EA73D0065EADF /* libGLEW.1.10.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F824BDF81B6EA73D0065EADF /* libGLEW.1.10.0.dylib */; };
 		F824BDFB1B6EA7520065EADF /* libglfw3.3.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F824BDFA1B6EA7520065EADF /* libglfw3.3.1.dylib */; };
+		F8356F7B1B80E8A700ACADC8 /* Material.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F8356F791B80E8A700ACADC8 /* Material.cpp */; };
 		F87C494A1B6D1FB400176A46 /* Cube.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F87C49411B6D1FB400176A46 /* Cube.cpp */; };
 		F87C494B1B6D1FB400176A46 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F87C49431B6D1FB400176A46 /* main.cpp */; };
 		F87C494C1B6D1FB400176A46 /* Object.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F87C49441B6D1FB400176A46 /* Object.cpp */; };
@@ -43,6 +44,10 @@
 		F81A03B31B6F5AB8009A0AAF /* Input.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Input.h; path = ../src/Input.h; sourceTree = "<group>"; };
 		F824BDF81B6EA73D0065EADF /* libGLEW.1.10.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libGLEW.1.10.0.dylib; path = ../glew/1.10.0/lib/libGLEW.1.10.0.dylib; sourceTree = "<group>"; };
 		F824BDFA1B6EA7520065EADF /* libglfw3.3.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libglfw3.3.1.dylib; path = ../glfw3/3.1/lib/libglfw3.3.1.dylib; sourceTree = "<group>"; };
+		F8356F771B80E68200ACADC8 /* toon.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = toon.frag; path = ../resource/toon.frag; sourceTree = "<group>"; };
+		F8356F781B80E68200ACADC8 /* toon.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = toon.vert; path = ../resource/toon.vert; sourceTree = "<group>"; };
+		F8356F791B80E8A700ACADC8 /* Material.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Material.cpp; sourceTree = "<group>"; };
+		F8356F7A1B80E8A700ACADC8 /* Material.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Material.h; sourceTree = "<group>"; };
 		F87C49401B6D1FB400176A46 /* Application.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Application.h; path = ../src/Application.h; sourceTree = "<group>"; };
 		F87C49411B6D1FB400176A46 /* Cube.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Cube.cpp; path = ../src/Cube.cpp; sourceTree = "<group>"; };
 		F87C49421B6D1FB400176A46 /* Cube.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Cube.h; path = ../src/Cube.h; sourceTree = "<group>"; };
@@ -134,6 +139,8 @@
 				F87C49501B6D242400176A46 /* Application.cpp */,
 				F8FE4D531B6ED2A000371851 /* Mesh.cpp */,
 				F8FE4D541B6ED2A000371851 /* Mesh.h */,
+				F8356F791B80E8A700ACADC8 /* Material.cpp */,
+				F8356F7A1B80E8A700ACADC8 /* Material.h */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -141,6 +148,8 @@
 		F88005DA1B6C88DD006263CB /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				F8356F771B80E68200ACADC8 /* toon.frag */,
+				F8356F781B80E68200ACADC8 /* toon.vert */,
 				F892CF011B725DAD00EC87E7 /* cube.obj */,
 				F892CF021B725DAD00EC87E7 /* head.obj */,
 				F8FE4D521B6ED1F700371851 /* bunny.obj */,
@@ -221,6 +230,7 @@
 				F87C494A1B6D1FB400176A46 /* Cube.cpp in Sources */,
 				F87C494D1B6D1FB400176A46 /* Plane.cpp in Sources */,
 				F87C494C1B6D1FB400176A46 /* Object.cpp in Sources */,
+				F8356F7B1B80E8A700ACADC8 /* Material.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -9,6 +9,14 @@ Plane::~Plane(){
 	
 }
 
+void Plane::SaveObjectState(){
+    //TODO: implement…
+}
+
+void Plane::LoadObjectState(){
+    //TODO: implement…
+}
+
 void Plane::Update(const float& deltaTime){
     
     mLeftX = mPosition.x - mScale.x;

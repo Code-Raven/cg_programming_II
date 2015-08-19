@@ -3,8 +3,8 @@
 layout(location = 0)
 in vec3 model_space_pos;
 
-uniform mat4 MVP;
+uniform mat4 MVPMatrix;
 
 void main(){
-	gl_Position = MVP * vec4(model_space_pos, 1);
+	gl_Position = MVPMatrix * vec4(model_space_pos, 1);
 }

@@ -5,7 +5,17 @@ Cube::Cube() : Object(){
 }
 
 Cube::~Cube(){
-	
+	//TODO: clean up code here…
+}
+
+void Cube::SaveObjectState(){
+    
+    Cube * cube = new Cube();
+    m_savedObject = cube;
+}
+
+void Cube::LoadObjectState(){
+    Copy(m_savedObject);
 }
 
 void Cube::BuildCube(){

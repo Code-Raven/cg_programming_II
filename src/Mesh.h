@@ -14,6 +14,10 @@ public:
     virtual ~Mesh();
     
 public:
+    void SaveObjectState() override;
+    void LoadObjectState() override;
+    
+public:
     void BuildMesh(const char* objName);
     
 private:
