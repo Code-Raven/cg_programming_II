@@ -17,11 +17,11 @@ void BasicMaterial::Render(RendData rendData){
     }
     
     glCullFace(GL_BACK);
-    glUseProgram(m_progId);
+    glUseProgram(m_progIds[0]);
     
     mat4 MVPMatrix = rendData.projMatrix * rendData.viewMatrix * rendData.modelMatrix;
     
-    glUniformMatrix4fv(m_modelViewProjId, 1, GL_FALSE, &MVPMatrix[0][0]);
+    glUniformMatrix4fv(m_modelViewProjIds[0], 1, GL_FALSE, &MVPMatrix[0][0]);
     
     glDrawArrays(rendData.rendMode, 0, rendData.numIndices);
 }
@@ -39,16 +39,17 @@ void ToonMaterial::Render(RendData rendData){
     glPolygonOffset( -30.0f, -30.0f );	//TODO: read up on this later...
     
     glCullFace(GL_BACK);
-    glUseProgram(m_progId);
+    glUseProgram(m_progIds[0]);
     
     mat4 MVPMatrix = rendData.projMatrix * rendData.viewMatrix * rendData.modelMatrix;
-    glUniformMatrix4fv(m_modelViewProjId, 1, GL_FALSE, &MVPMatrix[0][0]);
+    glUniformMatrix4fv(m_modelViewProjIds[0], 1, GL_FALSE, &MVPMatrix[0][0]);
     
     glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
     glLineWidth(10.0f);
     glDrawArrays(rendData.rendMode, 0, rendData.numIndices);
     
-    glUseProgram(m_progId);
+    glUseProgram(m_progIds[1]);
+	glUniformMatrix4fv(m_modelViewProjIds[1], 1, GL_FALSE, &MVPMatrix[0][0]);
     
     glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
     glDrawArrays(rendData.rendMode, 0, rendData.numIndices);
@@ -63,10 +64,10 @@ void OutlineMaterial::Render(RendData rendData){
     }
     
     glCullFace(GL_BACK);
-    glUseProgram(m_progId);
+    glUseProgram(m_progIds[0]);
     
     mat4 MVPMatrix = rendData.projMatrix * rendData.viewMatrix * rendData.modelMatrix;
-    glUniformMatrix4fv(m_modelViewProjId, 1, GL_FALSE, &MVPMatrix[0][0]);
+    glUniformMatrix4fv(m_modelViewProjIds[0], 1, GL_FALSE, &MVPMatrix[0][0]);
     
     glClearStencil(0);
     glClear(GL_STENCIL_BUFFER_BIT);
@@ -84,9 +85,9 @@ void OutlineMaterial::Render(RendData rendData){
     
     // Render the thick wireframe version.
     
-    glUseProgram(m_progId);
+    glUseProgram(m_progIds[1]);
     
-    glUniformMatrix4fv(m_modelViewProjId, 1, GL_FALSE, &MVPMatrix[0][0]);
+    glUniformMatrix4fv(m_modelViewProjIds[1], 1, GL_FALSE, &MVPMatrix[0][0]);
     
     glStencilFunc(GL_NOTEQUAL, 1, -1);
     glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
@@ -99,13 +100,31 @@ void OutlineMaterial::Render(RendData rendData){
 
 /*** material definitions ***/
 
-Material::Material() : m_progId(0), m_textId(0){}
+Material::Material() :
+	m_progIds(nullptr), m_textId(0), m_numIds(0),
+	m_modelIds(nullptr), m_modelViewIds(nullptr),
+	m_modelViewProjIds(nullptr){}
 
-void Material::SetProgId(GLuint progId){
-    m_progId = progId;
-    m_modelId = glGetUniformLocation(m_progId, "MMatrix");
-    m_modelViewId = glGetUniformLocation(m_progId, "MVMatrix");
-    m_modelViewProjId = glGetUniformLocation(m_progId, "MVPMatrix");
+void Material::SetProgIds(GLuint *progIds, GLuint numIds){
+    m_progIds = progIds;
+	GLuint progId = 0;
+
+	m_modelIds = new GLuint[numIds];
+	m_modelViewIds = new GLuint[numIds];
+	m_modelViewProjIds = new GLuint[numIds];
+
+	for(int i = 0; i < numIds; ++i){
+		progId = progIds[i];
+		m_modelIds[i] = glGetUniformLocation(progId, "MMatrix");
+		m_modelViewIds[i] = glGetUniformLocation(progId, "MVMatrix");
+		m_modelViewProjIds[i] = glGetUniformLocation(progId, "MVPMatrix");
+	}
+}
+
+Material::~Material(){
+	if(m_modelIds != nullptr) { delete m_modelIds; }
+	if(m_modelViewIds != nullptr) { delete m_modelViewIds; }
+	if(m_modelViewProjIds != nullptr) { delete m_modelViewProjIds; }
 }
 
 GLuint Material::LoadBMP(const char * imagepath){

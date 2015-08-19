@@ -27,18 +27,16 @@ public:
     
     //TODO: boden, figure uot what to do with texture and shader later…
     Material();
+	virtual ~Material();
     virtual void Render(RendData rendData) = 0;
     
     GLuint LoadBMP(const char * imagepath);
     
-    virtual void SetProgId(GLuint progId);
-
-    //TODO: boden, check to make sure this gets called…
-    virtual ~Material(){}
+    virtual void SetProgIds(GLuint *progIds, GLuint numIds);
 
 protected:
-    GLuint m_progId, m_textId;
-    GLuint m_modelId, m_modelViewId, m_modelViewProjId;
+    GLuint *m_progIds, m_textId, m_numIds;
+    GLuint *m_modelIds, *m_modelViewIds, *m_modelViewProjIds;
     
     //camera.MVPMatrixID = glGetUniformLocation(activeProgramId, "MVP");
     //GLuint MMatrixId, MVMatrixId, MVPMatrixId;

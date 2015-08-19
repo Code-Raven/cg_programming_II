@@ -71,14 +71,16 @@ void Object::Render(const Camera& camera){
     BeforeRender();
     
     typedef Material::RendData RendData;
-    
-    m_material->Render({
-        mRenderMode, 0,
+
+	RendData data = {
+		mRenderMode, 0,
         mNumIndices,
         m_modelMatrix,
         camera.viewMatrix,
         camera.projectionMatrix
-    });
+	};
+    
+    m_material->Render(data);
     
     //after render…
     glDisableVertexAttribArray(0);

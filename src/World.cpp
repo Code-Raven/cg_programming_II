@@ -18,7 +18,7 @@ World::World(){
     
     #ifdef BUNNY
         BasicMaterial* material = new BasicMaterial();
-        material->SetProgId(g_programIds[0]);
+        material->SetProgIds(g_programIds, 3);
         material->LoadBMP("dirt.bmp");
     
         mesh[0].BuildMesh("bunny.obj");
@@ -27,8 +27,8 @@ World::World(){
     #endif
     
     #ifdef BUNNY_LARGE
-        BasicMaterial* material = new BasicMaterial();
-        material->SetProgId(g_programIds[0]);
+        OutlineMaterial* material = new OutlineMaterial();
+        material->SetProgIds(g_programIds, 3);
         material->LoadBMP("dirt.bmp");
     
         mesh[0].BuildMesh("bunny_large.obj");
@@ -39,7 +39,7 @@ World::World(){
     
     #ifdef DIALGA
         BasicMaterial* material = new BasicMaterial();
-        material->SetProgId(g_programIds[0]);
+        material->SetProgIds(g_programIds, 3);
         material->LoadBMP("dialga.bmp");
     
         mesh[0].BuildMesh("dialga.obj");
