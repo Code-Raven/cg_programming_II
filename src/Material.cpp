@@ -43,13 +43,15 @@ void ToonMaterial::Render(RendData rendData){
     
     mat4 MVPMatrix = rendData.projMatrix * rendData.viewMatrix * rendData.modelMatrix;
     glUniformMatrix4fv(m_modelViewProjIds[0], 1, GL_FALSE, &MVPMatrix[0][0]);
+	glUniformMatrix4fv(m_modelIds[0], 1, GL_FALSE, &rendData.modelMatrix[0][0]);
     
     glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
     glLineWidth(10.0f);
     glDrawArrays(rendData.rendMode, 0, rendData.numIndices);
     
-    glUseProgram(m_progIds[1]);
-	glUniformMatrix4fv(m_modelViewProjIds[1], 1, GL_FALSE, &MVPMatrix[0][0]);
+    glUseProgram(m_progIds[2]);
+	glUniformMatrix4fv(m_modelViewProjIds[2], 1, GL_FALSE, &MVPMatrix[0][0]);
+	glUniformMatrix4fv(m_modelIds[2], 1, GL_FALSE, &rendData.modelMatrix[0][0]);
     
     glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
     glDrawArrays(rendData.rendMode, 0, rendData.numIndices);
@@ -68,6 +70,7 @@ void OutlineMaterial::Render(RendData rendData){
     
     mat4 MVPMatrix = rendData.projMatrix * rendData.viewMatrix * rendData.modelMatrix;
     glUniformMatrix4fv(m_modelViewProjIds[0], 1, GL_FALSE, &MVPMatrix[0][0]);
+	glUniformMatrix4fv(m_modelIds[0], 1, GL_FALSE, &rendData.modelMatrix[0][0]);
     
     glClearStencil(0);
     glClear(GL_STENCIL_BUFFER_BIT);
@@ -85,9 +88,10 @@ void OutlineMaterial::Render(RendData rendData){
     
     // Render the thick wireframe version.
     
-    glUseProgram(m_progIds[1]);
+    glUseProgram(m_progIds[2]);
     
-    glUniformMatrix4fv(m_modelViewProjIds[1], 1, GL_FALSE, &MVPMatrix[0][0]);
+    glUniformMatrix4fv(m_modelViewProjIds[2], 1, GL_FALSE, &MVPMatrix[0][0]);
+	//glUniformMatrix4fv(m_modelIds[2], 1, GL_FALSE, &rendData.modelMatrix[0][0]);
     
     glStencilFunc(GL_NOTEQUAL, 1, -1);
     glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);

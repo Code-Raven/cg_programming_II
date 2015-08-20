@@ -16,11 +16,38 @@
 ** uniform mat4 gxl3d_ModelMatrix;
 */
 
-layout(location = 0)
-in vec3 model_space_pos;
+layout(location = 0) in vec3 vertPos;
+layout(location = 2) in vec3 vertNorm;
 
+uniform mat4 MMatrix;
 uniform mat4 MVPMatrix;
 
+out vec3 vertColor;
+
+	//mat4 normalMatrix;
+	//vec3 normal, lightDir;
+	//vec4 diffuse;
+	//float NdotL;
+
+	//diffuse = vec3(1, 1, 1, 1);
+	//normalMatrix = transpose(inverse(MVPMatrix));
+	//normal = normalize(normalMatrix * vertNorm);
+
+	//lightDir = normalize(vec3(1, 1, 1));
+	//NdotL = max(dot(normal, lightDir), 0.0);
+
+	//vertColor = vec3(0, 0, 1); //(NdotL * diffuse).xyz;
+
 void main(){
-	gl_Position = MVPMatrix * vec4(model_space_pos, 1);
+	vec3 diffuse = vec3(1, 1, 1);
+	vec3 lightDir = normalize(vec3(1, 1, 1));
+
+	mat4 normalMatrix = transpose(inverse(MMatrix));
+	vec3 normal = (normalMatrix * vec4(vertNorm, 0)).xyz;
+
+	float NdotL = max(dot(normal, lightDir), 0.0);
+
+	vertColor = NdotL * diffuse;
+
+	gl_Position = MVPMatrix * vec4(vertPos, 1);
 }

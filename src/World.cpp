@@ -27,14 +27,16 @@ World::World(){
     #endif
     
     #ifdef BUNNY_LARGE
-        OutlineMaterial* material = new OutlineMaterial();
+        //OutlineMaterial* material = new OutlineMaterial();
+		ToonMaterial* material = new ToonMaterial();
+		//BasicMaterial* material = new BasicMaterial();
         material->SetProgIds(g_programIds, 3);
         material->LoadBMP("dirt.bmp");
     
         mesh[0].BuildMesh("bunny_large.obj");
         mesh[0].SetMaterial(material);
         mesh[0].SetPosition(vec3(0.0f, -3.0f, 0.0f));
-        mesh[0].SetScale(vec3(3.0f));
+        mesh[0].SetScale(vec3(10.0f, 1.0f, 1.0f));
     #endif
     
     #ifdef DIALGA
