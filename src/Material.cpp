@@ -59,8 +59,8 @@ void ToonOutlineMaterial::Render(RendData rendData){
     glUniformMatrix4fv(m_modelViewProjId, 1, GL_FALSE, &MVPMatrix[0][0]);
     glUniformMatrix4fv(m_modelId, 1, GL_FALSE, &modelMatrix[0][0]);
     
-    vec3 ambientColor = vec3(0.3, 0, 0.4);
-    vec3 diffuseColor = vec3(0.5f, 0.1f, 0.6f);
+    vec3 ambientColor = vec3(0.1, 0, 0.2);
+    vec3 diffuseColor = vec3(0.3f, 0.03f, 0.4f);
     vec3 specularColor = vec3(0.9f, 0.7f, 0.9f);
     glUniform3f(m_ambientId, ambientColor.x, ambientColor.y, ambientColor.z);
     glUniform3f(m_diffuseId, diffuseColor.x, diffuseColor.y, diffuseColor.z);
