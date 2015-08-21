@@ -8,23 +8,7 @@
 
 #include "Material.h"
 
-/*** custom material definitions ***/
-
-void BasicMaterial::Render(RendData rendData){
-    
-    if(m_textId > 0){   //Only if we loaded a texture…
-        glBindTexture(GL_TEXTURE_2D, m_textId);
-    }
-    
-    glCullFace(GL_BACK);
-    glUseProgram(m_progIds[0]);
-    
-    mat4 MVPMatrix = rendData.projMatrix * rendData.viewMatrix * rendData.modelMatrix;
-    
-    glUniformMatrix4fv(m_modelViewProjIds[0], 1, GL_FALSE, &MVPMatrix[0][0]);
-    
-    glDrawArrays(rendData.rendMode, 0, rendData.numIndices);
-}
+/*** ToonMaterial ***/
 
 void ToonMaterial::Render(RendData rendData){
     
@@ -39,19 +23,19 @@ void ToonMaterial::Render(RendData rendData){
     glPolygonOffset( -30.0f, -30.0f );	//TODO: read up on this later...
     
     glCullFace(GL_BACK);
-    glUseProgram(m_progIds[0]);
+    glUseProgram(m_outlineId);
     
-    mat4 MVPMatrix = rendData.projMatrix * rendData.viewMatrix * rendData.modelMatrix;
-    glUniformMatrix4fv(m_modelViewProjIds[0], 1, GL_FALSE, &MVPMatrix[0][0]);
-	glUniformMatrix4fv(m_modelIds[0], 1, GL_FALSE, &rendData.modelMatrix[0][0]);
+    mat4 modelMatrix = rendData.modelMatrix;
+    mat4 MVPMatrix = rendData.projMatrix * rendData.viewMatrix * modelMatrix;
+    glUniformMatrix4fv(m_modelViewProjId, 1, GL_FALSE, &MVPMatrix[0][0]);
+	glUniformMatrix4fv(m_modelId, 1, GL_FALSE, &modelMatrix[0][0]);
     
     glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
     glLineWidth(10.0f);
     glDrawArrays(rendData.rendMode, 0, rendData.numIndices);
     
-    glUseProgram(m_progIds[2]);
-	glUniformMatrix4fv(m_modelViewProjIds[2], 1, GL_FALSE, &MVPMatrix[0][0]);
-	glUniformMatrix4fv(m_modelIds[2], 1, GL_FALSE, &rendData.modelMatrix[0][0]);
+    glUseProgram(m_progId);
+	glUniformMatrix4fv(m_modelViewProjOutlineId, 1, GL_FALSE, &MVPMatrix[0][0]);
     
     glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
     glDrawArrays(rendData.rendMode, 0, rendData.numIndices);
@@ -59,18 +43,28 @@ void ToonMaterial::Render(RendData rendData){
     glPopAttrib();
 }
 
-void OutlineMaterial::Render(RendData rendData){
+/*** StencilOutlineMaterial ***/
+
+void ToonOutlineMaterial::Render(RendData rendData){
     
     if(m_textId > 0){   //Only if we loaded a texture…
         glBindTexture(GL_TEXTURE_2D, m_textId);
     }
     
     glCullFace(GL_BACK);
-    glUseProgram(m_progIds[0]);
+    glUseProgram(m_progId);
     
-    mat4 MVPMatrix = rendData.projMatrix * rendData.viewMatrix * rendData.modelMatrix;
-    glUniformMatrix4fv(m_modelViewProjIds[0], 1, GL_FALSE, &MVPMatrix[0][0]);
-	glUniformMatrix4fv(m_modelIds[0], 1, GL_FALSE, &rendData.modelMatrix[0][0]);
+    mat4 modelMatrix = rendData.modelMatrix;
+    mat4 MVPMatrix = rendData.projMatrix * rendData.viewMatrix * modelMatrix;
+    glUniformMatrix4fv(m_modelViewProjId, 1, GL_FALSE, &MVPMatrix[0][0]);
+    glUniformMatrix4fv(m_modelId, 1, GL_FALSE, &modelMatrix[0][0]);
+    
+    vec3 ambientColor = vec3(1, 0, 0);
+    vec3 diffuseColor = vec3(0.5f, 0.5f, 0.5f);
+    vec3 specularColor = vec3(1.0f, 1.0f, 1.0f);
+    glUniform3fv(m_ambientId, 3, &ambientColor.x);
+    glUniform3fv(m_diffuseId, 3, &diffuseColor.x);
+    glUniform3fv(m_specularId, 3, &specularColor.x);
     
     glClearStencil(0);
     glClear(GL_STENCIL_BUFFER_BIT);
@@ -88,10 +82,9 @@ void OutlineMaterial::Render(RendData rendData){
     
     // Render the thick wireframe version.
     
-    glUseProgram(m_progIds[2]);
+    glUseProgram(m_outlineId);
     
-    glUniformMatrix4fv(m_modelViewProjIds[2], 1, GL_FALSE, &MVPMatrix[0][0]);
-	//glUniformMatrix4fv(m_modelIds[2], 1, GL_FALSE, &rendData.modelMatrix[0][0]);
+    glUniformMatrix4fv(m_modelViewProjOutlineId, 1, GL_FALSE, &MVPMatrix[0][0]);
     
     glStencilFunc(GL_NOTEQUAL, 1, -1);
     glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
@@ -102,34 +95,137 @@ void OutlineMaterial::Render(RendData rendData){
     glDrawArrays(rendData.rendMode, 0, rendData.numIndices);
 }
 
-/*** material definitions ***/
+/*** OutlineMaterial ***/
 
-Material::Material() :
-	m_progIds(nullptr), m_textId(0), m_numIds(0),
-	m_modelIds(nullptr), m_modelViewIds(nullptr),
-	m_modelViewProjIds(nullptr){}
-
-void Material::SetProgIds(GLuint *progIds, GLuint numIds){
-    m_progIds = progIds;
-	GLuint progId = 0;
-
-	m_modelIds = new GLuint[numIds];
-	m_modelViewIds = new GLuint[numIds];
-	m_modelViewProjIds = new GLuint[numIds];
-
-	for(int i = 0; i < numIds; ++i){
-		progId = progIds[i];
-		m_modelIds[i] = glGetUniformLocation(progId, "MMatrix");
-		m_modelViewIds[i] = glGetUniformLocation(progId, "MVMatrix");
-		m_modelViewProjIds[i] = glGetUniformLocation(progId, "MVPMatrix");
-	}
+OutlineMaterial::OutlineMaterial(GLuint progId, GLuint outlineId) : SpecularMaterial(progId)
+{
+    m_modelViewProjOutlineId = glGetUniformLocation(outlineId, "MVPMatrix");
+    m_outlineId = outlineId;
 }
 
-Material::~Material(){
-	if(m_modelIds != nullptr) { delete m_modelIds; }
-	if(m_modelViewIds != nullptr) { delete m_modelViewIds; }
-	if(m_modelViewProjIds != nullptr) { delete m_modelViewProjIds; }
+void OutlineMaterial::Render(RendData rendData){
+    
+    if(m_textId > 0){   //Only if we loaded a texture…
+        glBindTexture(GL_TEXTURE_2D, m_textId);
+    }
+    
+    glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+    
+    glUseProgram(m_progId);
+    
+    mat4 modelMatrix = rendData.modelMatrix;
+    mat4 MVPMatrix = rendData.projMatrix * rendData.viewMatrix * modelMatrix;
+    glUniformMatrix4fv(m_modelViewProjId, 1, GL_FALSE, &MVPMatrix[0][0]);
+    glUniformMatrix4fv(m_modelId, 1, GL_FALSE, &modelMatrix[0][0]);
+    
+    // Render the mesh into the stencil buffer.
+    
+    glCullFace(GL_BACK);
+    
+    glDrawArrays(rendData.rendMode, 0, rendData.numIndices);
+    
+    // Render the thick wireframe version.
+    
+    glUseProgram(m_outlineId);
+    
+    mat4 scaleMatrix = glm::scale(MVPMatrix, vec3(1.1f));
+    glUniformMatrix4fv(m_modelViewProjOutlineId, 1, GL_FALSE, &scaleMatrix[0][0]);
+    
+    glCullFace(GL_FRONT);
+    
+    glDrawArrays(rendData.rendMode, 0, rendData.numIndices);
 }
+
+/*** AmbientMaterial ***/
+
+AmbientMaterial::AmbientMaterial(GLuint progId) : LitMaterial(progId) {
+    m_ambientId = glGetUniformLocation(progId, "ambient");
+}
+
+void AmbientMaterial::Render(RendData rendData){
+
+    if(m_textId > 0){   //Only if we loaded a texture…
+        glBindTexture(GL_TEXTURE_2D, m_textId);
+    }
+
+    glCullFace(GL_BACK);
+    glUseProgram(m_progId);
+
+    mat4 MVPMatrix = rendData.projMatrix * rendData.viewMatrix * rendData.modelMatrix;
+
+    glUniformMatrix4fv(m_modelViewProjId, 1, GL_FALSE, &MVPMatrix[0][0]);
+    
+    vec3 ambientColor = vec3(1, 0, 0);
+    glUniform3fv(m_ambientId, 3, &ambientColor.x);
+
+    glDrawArrays(rendData.rendMode, 0, rendData.numIndices);
+}
+
+/*** DiffuseMaterial ***/
+
+DiffuseMaterial::DiffuseMaterial(GLuint progId) : AmbientMaterial(progId) {
+    m_diffuseId = glGetUniformLocation(progId, "diffuse");
+}
+
+void DiffuseMaterial::Render(RendData rendData){
+    
+    if(m_textId > 0){   //Only if we loaded a texture…
+        glBindTexture(GL_TEXTURE_2D, m_textId);
+    }
+    
+    glCullFace(GL_BACK);
+    glUseProgram(m_progId);
+    
+    mat4 MVPMatrix = rendData.projMatrix * rendData.viewMatrix * rendData.modelMatrix;
+    
+    glUniformMatrix4fv(m_modelViewProjId, 1, GL_FALSE, &MVPMatrix[0][0]);
+    
+    vec3 ambientColor = vec3(1, 0, 0);
+    vec3 diffuseColor = vec3(0.5f, 0.5f, 0.5f);
+    glUniform3fv(m_ambientId, 3, &ambientColor.x);
+    glUniform3fv(m_diffuseId, 3, &diffuseColor.x);
+    
+    glDrawArrays(rendData.rendMode, 0, rendData.numIndices);
+}
+
+/*** SpecularMaterial ***/
+
+SpecularMaterial::SpecularMaterial(GLuint progId) : DiffuseMaterial(progId) {
+    m_specularId = glGetUniformLocation(progId, "specular");
+}
+
+void SpecularMaterial::Render(RendData rendData){
+    
+    if(m_textId > 0){   //Only if we loaded a texture…
+        glBindTexture(GL_TEXTURE_2D, m_textId);
+    }
+    
+    glCullFace(GL_BACK);
+    glUseProgram(m_progId);
+    
+    mat4 MVPMatrix = rendData.projMatrix * rendData.viewMatrix * rendData.modelMatrix;
+    
+    glUniformMatrix4fv(m_modelViewProjId, 1, GL_FALSE, &MVPMatrix[0][0]);
+    
+    vec3 ambientColor = vec3(1, 0, 0);
+    vec3 diffuseColor = vec3(0.5f, 0.5f, 0.5f);
+    vec3 specularColor = vec3(1.0f, 1.0f, 1.0f);
+    glUniform3fv(m_ambientId, 3, &ambientColor.x);
+    glUniform3fv(m_diffuseId, 3, &diffuseColor.x);
+    glUniform3fv(m_specularId, 3, &specularColor.x);
+    
+    glDrawArrays(rendData.rendMode, 0, rendData.numIndices);
+}
+
+/*** LitMaterial (abstract) ***/
+
+LitMaterial::LitMaterial(GLuint progId) : Material(progId)
+{
+    m_modelViewProjId = glGetUniformLocation(progId, "MVPMatrix");
+    m_modelId = glGetUniformLocation(progId, "MMatrix");
+}
+
+/*** Material (abstract) ***/
 
 GLuint Material::LoadBMP(const char * imagepath){
     // Data read from the header of the BMP file

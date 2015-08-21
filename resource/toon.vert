@@ -21,25 +21,13 @@ layout(location = 2) in vec3 vertNorm;
 
 uniform mat4 MMatrix;
 uniform mat4 MVPMatrix;
+uniform vec3 ambient;
+uniform vec3 diffuse;
+uniform vec3 specular;
 
 out vec3 vertColor;
 
-	//mat4 normalMatrix;
-	//vec3 normal, lightDir;
-	//vec4 diffuse;
-	//float NdotL;
-
-	//diffuse = vec3(1, 1, 1, 1);
-	//normalMatrix = transpose(inverse(MVPMatrix));
-	//normal = normalize(normalMatrix * vertNorm);
-
-	//lightDir = normalize(vec3(1, 1, 1));
-	//NdotL = max(dot(normal, lightDir), 0.0);
-
-	//vertColor = vec3(0, 0, 1); //(NdotL * diffuse).xyz;
-
 void main(){
-	vec3 diffuse = vec3(1, 1, 1);
 	vec3 lightDir = normalize(vec3(1, 1, 1));
 
 	mat4 normalMatrix = transpose(inverse(MMatrix));
@@ -47,7 +35,7 @@ void main(){
 
 	float NdotL = max(dot(normal, lightDir), 0.0);
 
-	vertColor = NdotL * diffuse;
+	vertColor = NdotL * ambient;
 
 	gl_Position = MVPMatrix * vec4(vertPos, 1);
 }

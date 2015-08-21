@@ -26,38 +26,74 @@ public:
     };
     
     //TODO: boden, figure uot what to do with texture and shader later…
-    Material();
-	virtual ~Material();
+    Material(GLuint progId) : m_progId(progId), m_textId(0){}
+    virtual ~Material(){}
     virtual void Render(RendData rendData) = 0;
     
     GLuint LoadBMP(const char * imagepath);
-    
-    virtual void SetProgIds(GLuint *progIds, GLuint numIds);
 
 protected:
-    GLuint *m_progIds, m_textId, m_numIds;
-    GLuint *m_modelIds, *m_modelViewIds, *m_modelViewProjIds;
-    
-    //camera.MVPMatrixID = glGetUniformLocation(activeProgramId, "MVP");
-    //GLuint MMatrixId, MVMatrixId, MVPMatrixId;
-    //mat4 projectionMatrix, viewMatrix;
+    GLuint m_progId, m_textId;
 };
 
-class BasicMaterial : public Material {
+class LitMaterial : public Material {
     
 public:
+    LitMaterial(GLuint progIds);
+    virtual ~LitMaterial(){}
+    virtual void Render(RendData rendData) = 0;
+    GLuint m_modelViewProjId, m_modelId;
+};
+
+class AmbientMaterial : public LitMaterial {
+    
+public:
+    AmbientMaterial(GLuint progId);
+    virtual ~AmbientMaterial(){}
+    virtual void Render(RendData rendData);
+    GLuint m_ambientId;
+};
+
+class DiffuseMaterial : public AmbientMaterial {
+    
+public:
+    DiffuseMaterial(GLuint progId);
+    virtual ~DiffuseMaterial(){}
+    virtual void Render(RendData rendData);
+    GLuint m_diffuseId;
+};
+
+class SpecularMaterial : public DiffuseMaterial {
+    
+public:
+    SpecularMaterial(GLuint progId);
+    virtual ~SpecularMaterial(){}
+    virtual void Render(RendData rendData);
+    GLuint m_specularId;
+};
+
+class OutlineMaterial : public SpecularMaterial {
+    
+public:
+    OutlineMaterial(GLuint progId, GLuint outlineId);
+    virtual ~OutlineMaterial(){}
+    virtual void Render(RendData rendData);
+    GLuint m_outlineId, m_modelViewProjOutlineId;
+};
+
+class ToonOutlineMaterial : public OutlineMaterial {
+    
+public:
+    ToonOutlineMaterial(GLuint progId, GLuint outlineId) : OutlineMaterial(progId, outlineId){}
+    virtual ~ToonOutlineMaterial(){}
     virtual void Render(RendData rendData);
 };
 
-class ToonMaterial : public Material {
+class ToonMaterial : public OutlineMaterial {
     
 public:
-    virtual void Render(RendData rendData);
-};
-
-class OutlineMaterial : public Material {
-
-public:
+    ToonMaterial(GLuint progId, GLuint outlineId) : OutlineMaterial(progId, outlineId){}
+    virtual ~ToonMaterial(){}
     virtual void Render(RendData rendData);
 };
 

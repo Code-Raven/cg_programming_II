@@ -2,6 +2,10 @@
 
 //TODO: Add functionality later...
 World::World(){
+    //material->LoadBMP("dirt.bmp");
+    ToonOutlineMaterial* outlineMat = new ToonOutlineMaterial(g_programIds[2], g_programIds[0]);
+    //ToonMaterial* toonMat = new ToonMaterial(g_programIds[2], g_programIds[0]);
+    
     plane = new Plane[1];
     plane[0].BuildTriangles(1, 1);
 	//plane[0].SetScale(vec3(0.15f));
@@ -17,35 +21,22 @@ World::World(){
     #define BUNNY_LARGE
     
     #ifdef BUNNY
-        BasicMaterial* material = new BasicMaterial();
-        material->SetProgIds(g_programIds, 3);
-        material->LoadBMP("dirt.bmp");
-    
         mesh[0].BuildMesh("bunny.obj");
-        mesh[0].SetMaterial(material);
+        mesh[0].SetMaterial(outlineMat);
         mesh[0].SetScale(vec3(3.0f));
     #endif
     
     #ifdef BUNNY_LARGE
-        //OutlineMaterial* material = new OutlineMaterial();
-		ToonMaterial* material = new ToonMaterial();
-		//BasicMaterial* material = new BasicMaterial();
-        material->SetProgIds(g_programIds, 3);
-        material->LoadBMP("dirt.bmp");
-    
         mesh[0].BuildMesh("bunny_large.obj");
-        mesh[0].SetMaterial(material);
+        mesh[0].SetMaterial(outlineMat);
         mesh[0].SetPosition(vec3(0.0f, -3.0f, 0.0f));
-        mesh[0].SetScale(vec3(10.0f, 1.0f, 1.0f));
+        mesh[0].SetScale(vec3(3.0f));
     #endif
     
     #ifdef DIALGA
-        BasicMaterial* material = new BasicMaterial();
-        material->SetProgIds(g_programIds, 3);
-        material->LoadBMP("dialga.bmp");
-    
+        //material->LoadBMP("dialga.bmp");
         mesh[0].BuildMesh("dialga.obj");
-        mesh[0].SetMaterial(material);
+        mesh[0].SetMaterial(outlineMat);
         mesh[0].SetScale(vec3(0.1f));
     #endif
 
