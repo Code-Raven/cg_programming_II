@@ -18,7 +18,7 @@ World::World(){
     
     mesh = new Mesh[1];
     
-    #define DIALGA
+    #define BUNNY_LARGE
     
     #ifdef BUNNY
         mesh[0].BuildMesh("bunny.obj");
