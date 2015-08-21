@@ -59,12 +59,12 @@ void ToonOutlineMaterial::Render(RendData rendData){
     glUniformMatrix4fv(m_modelViewProjId, 1, GL_FALSE, &MVPMatrix[0][0]);
     glUniformMatrix4fv(m_modelId, 1, GL_FALSE, &modelMatrix[0][0]);
     
-    vec3 ambientColor = vec3(1, 0, 0);
-    vec3 diffuseColor = vec3(0.5f, 0.5f, 0.5f);
-    vec3 specularColor = vec3(1.0f, 1.0f, 1.0f);
-    glUniform3fv(m_ambientId, 3, &ambientColor.x);
-    glUniform3fv(m_diffuseId, 3, &diffuseColor.x);
-    glUniform3fv(m_specularId, 3, &specularColor.x);
+    vec3 ambientColor = vec3(0.3, 0, 0.4);
+    vec3 diffuseColor = vec3(0.5f, 0.1f, 0.6f);
+    vec3 specularColor = vec3(0.9f, 0.7f, 0.9f);
+    glUniform3f(m_ambientId, ambientColor.x, ambientColor.y, ambientColor.z);
+    glUniform3f(m_diffuseId, diffuseColor.x, diffuseColor.y, diffuseColor.z);
+    glUniform3f(m_specularId, specularColor.x, specularColor.y, specularColor.z);
     
     glClearStencil(0);
     glClear(GL_STENCIL_BUFFER_BIT);
@@ -210,9 +210,9 @@ void SpecularMaterial::Render(RendData rendData){
     vec3 ambientColor = vec3(1, 0, 0);
     vec3 diffuseColor = vec3(0.5f, 0.5f, 0.5f);
     vec3 specularColor = vec3(1.0f, 1.0f, 1.0f);
-    glUniform3fv(m_ambientId, 3, &ambientColor.x);
-    glUniform3fv(m_diffuseId, 3, &diffuseColor.x);
-    glUniform3fv(m_specularId, 3, &specularColor.x);
+    glUniform3f(m_ambientId, ambientColor.x, ambientColor.y, ambientColor.z);
+    glUniform3f(m_diffuseId, diffuseColor.x, diffuseColor.y, diffuseColor.z);
+    glUniform3f(m_specularId, specularColor.x, specularColor.y, specularColor.z);
     
     glDrawArrays(rendData.rendMode, 0, rendData.numIndices);
 }

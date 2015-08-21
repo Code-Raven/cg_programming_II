@@ -18,7 +18,7 @@ World::World(){
     
     mesh = new Mesh[1];
     
-    #define BUNNY_LARGE
+    #define DIALGA
     
     #ifdef BUNNY
         mesh[0].BuildMesh("bunny.obj");
@@ -28,6 +28,13 @@ World::World(){
     
     #ifdef BUNNY_LARGE
         mesh[0].BuildMesh("bunny_large.obj");
+        mesh[0].SetMaterial(outlineMat);
+        mesh[0].SetPosition(vec3(0.0f, -3.0f, 0.0f));
+        mesh[0].SetScale(vec3(3.0f));
+    #endif
+    
+    #ifdef SPHERE
+        mesh[0].BuildMesh("sphere.obj");
         mesh[0].SetMaterial(outlineMat);
         mesh[0].SetPosition(vec3(0.0f, -3.0f, 0.0f));
         mesh[0].SetScale(vec3(3.0f));
