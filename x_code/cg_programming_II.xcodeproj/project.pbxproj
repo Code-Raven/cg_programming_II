@@ -69,6 +69,8 @@
 		F88005E81B6C9217006263CB /* texture.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = texture.vert; path = ../resource/texture.vert; sourceTree = "<group>"; };
 		F892CF011B725DAD00EC87E7 /* cube.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = cube.obj; path = ../resource/cube.obj; sourceTree = "<group>"; };
 		F892CF021B725DAD00EC87E7 /* head.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = head.obj; path = ../resource/head.obj; sourceTree = "<group>"; };
+		F8D970801B88DEEB006046FC /* diffuse.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = diffuse.frag; path = ../resource/diffuse.frag; sourceTree = "<group>"; };
+		F8D970811B88DEEB006046FC /* diffuse.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = diffuse.vert; path = ../resource/diffuse.vert; sourceTree = "<group>"; };
 		F8FE4D501B6EC89100371851 /* TODO.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = TODO.txt; path = ../resource/TODO.txt; sourceTree = "<group>"; };
 		F8FE4D521B6ED1F700371851 /* bunny.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = bunny.obj; path = ../resource/bunny.obj; sourceTree = "<group>"; };
 		F8FE4D531B6ED2A000371851 /* Mesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Mesh.cpp; path = ../src/Mesh.cpp; sourceTree = "<group>"; };
@@ -148,6 +150,8 @@
 		F88005DA1B6C88DD006263CB /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				F8D970801B88DEEB006046FC /* diffuse.frag */,
+				F8D970811B88DEEB006046FC /* diffuse.vert */,
 				F8356F771B80E68200ACADC8 /* toon.frag */,
 				F8356F781B80E68200ACADC8 /* toon.vert */,
 				F892CF011B725DAD00EC87E7 /* cube.obj */,

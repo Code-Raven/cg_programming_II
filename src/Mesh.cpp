@@ -18,15 +18,6 @@ void Mesh::LoadObjectState(){
 
 void Mesh::BuildMesh(const char* objName){
     
-    static bool built = false;
-    
-    if(built){
-        fprintf(stderr, "Failed to build triangles. Object already built!\n");
-        return;
-    }
-    
-    built = true;
-    
     // Read our .obj file
     stdVec3 vertices, normals;	//TODO: Use normals later.
     stdVec2 uvs;

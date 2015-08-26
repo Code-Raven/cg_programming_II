@@ -22,6 +22,32 @@ NOTES:
 //For texture information...
 https://open.gl/textures
 
+Lighting…
+http://www.tomdalling.com/blog/modern-opengl/07-more-lighting-ambient-specular-attenuation-gamma/
+http://140.129.20.249/~jmchen/cg/docs/rendering%20pipeline/rendering/light_ambient.html
+
+http://http.developer.nvidia.com/CgTutorial/cg_tutorial_chapter05.html
+
+///////////////////
+Lighting terms:
+    emissive, ambient, diffuse, and specular.
+
+Basic Lighting Model:
+    surfaceColor = emissive + ambient + diffuse + specular
+
+emissive = object color (described as light or a glow emitting from an object).
+emissive = Ke (object color)
+
+ambient = light color * object reflectance (often described as light evenly bouncing around)
+ambient = globalAmbient * Ka (Ka is reflectance, and globalAmbient is light color)
+
+attenuation
+
+
+
+
+
+
 
 Object
     has material
