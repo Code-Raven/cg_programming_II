@@ -13,7 +13,7 @@ out vec3 vertColor;
 
 void main(){
 	vec3 lightDir = normalize(vec3(1, 1, 1));
-
+	//TODO: bring this in via c++ code...
 	mat4 normalMatrix = transpose(inverse(MMatrix));
 	vec3 normal = normalize((normalMatrix * vec4(vertNorm, 0)).xyz);
 

@@ -90,6 +90,12 @@
     <None Include="..\resource\toon.vert">
       <Filter>_Resource</Filter>
     </None>
+    <None Include="..\resource\specular.frag">
+      <Filter>_Resource</Filter>
+    </None>
+    <None Include="..\resource\specular.vert">
+      <Filter>_Resource</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\resource\dirt.bmp">
