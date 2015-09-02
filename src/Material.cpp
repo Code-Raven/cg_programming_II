@@ -191,11 +191,39 @@ void DiffuseMaterial::Render(RendData rendData){
 /*** SpecularMaterial ***/
 
 SpecularMaterial::SpecularMaterial(GLuint progId) : DiffuseMaterial(progId) {
-    m_specularId = glGetUniformLocation(progId, "specular");
+	//m_specularId = glGetUniformLocation(progId, "specular");	//TODO: remove later...
+	
+	m_modelMatId = glGetUniformLocation(progId, "modelMatrix");
+	m_modelViewMatId = glGetUniformLocation(progId, "modelViewMatrix");
+	//TODO: put modelViewProjMatId here...
+	m_normMatId = glGetUniformLocation(progId, "normMatrix");
+	m_lightPosId = glGetUniformLocation(progId, "lightPos");
+	m_emissiveColorId = glGetUniformLocation(progId, "emissiveColor");
+	m_ambientColorId = glGetUniformLocation(progId, "ambientColor");
+	m_lightColorId = glGetUniformLocation(progId, "lightColor");
+	m_objColorId = glGetUniformLocation(progId, "objColor");
+	m_specColorId = glGetUniformLocation(progId, "specColor");
+	m_objShineId = glGetUniformLocation(progId, "objShine");
+	m_objReflectId = glGetUniformLocation(progId, "objReflect");
 }
 
 void SpecularMaterial::Render(RendData rendData){
     
+	/*
+		uniform mat4 normMatrix;
+		uniform mat4 MVMatrix;
+		uniform mat4 MVPMatrix;
+
+		uniform vec3 lightDir = vec3(1, 0, 0);	
+		uniform vec3 objColor = vec3(1, 1, 1);	
+		uniform vec3 lightColor = vec3(1, 1, 1);	
+	
+		uniform float glow = 0.0f;
+		uniform float shininess = 1.0f;
+		uniform float objRefl = 1.0f;
+		uniform float objSpecRefl = 1.0f;
+	*/
+
     if(m_textId > 0){   //Only if we loaded a texture…
         glBindTexture(GL_TEXTURE_2D, m_textId);
     }
@@ -203,16 +231,35 @@ void SpecularMaterial::Render(RendData rendData){
     glCullFace(GL_BACK);
     glUseProgram(m_progId);
     
-    mat4 MVPMatrix = rendData.projMatrix * rendData.viewMatrix * rendData.modelMatrix;
+	mat4 modelMatrix = rendData.modelMatrix;
+	mat4 modelViewMat = rendData.viewMatrix * modelMatrix;
+    mat4 modelViewProjMat = rendData.projMatrix * modelViewMat;
+	mat4 normMatrix = transpose(inverse(modelMatrix));
     
-    glUniformMatrix4fv(m_modelViewProjId, 1, GL_FALSE, &MVPMatrix[0][0]);
-    
-    vec3 ambientColor = vec3(1, 0, 0);
-    vec3 diffuseColor = vec3(0.5f, 0.5f, 0.5f);
-    vec3 specularColor = vec3(1.0f, 1.0f, 1.0f);
-    glUniform3f(m_ambientId, ambientColor.x, ambientColor.y, ambientColor.z);
-    glUniform3f(m_diffuseId, diffuseColor.x, diffuseColor.y, diffuseColor.z);
-    glUniform3f(m_specularId, specularColor.x, specularColor.y, specularColor.z);
+    vec3 lightPos = vec3(10, 0, 0);		//TODO: set this globally...
+	vec3 emissiveColor = vec3(0, 0, 0);	//TODO: set this globally...
+	vec3 ambientColor = vec3(0.025f, 0.025f, 0.05f);	//TODO: set this globally...
+	vec3 objColor = vec3(1, 0, 0);		//TODO: set this globally...
+	vec3 specColor = vec3(1, 1, 1);		//TODO: set this globally...
+	vec3 lightColor = vec3(1, 1, 1);	//TODO: set this globally...
+
+	float objShine = 30.0f;				//TODO: set this globally...
+	float objReflect = 0.2f;			//TODO: set this globally...
+
+	glUniformMatrix4fv(m_modelMatId, 1, GL_FALSE, &modelMatrix[0][0]);
+	glUniformMatrix4fv(m_modelViewMatId, 1, GL_FALSE, &modelViewMat[0][0]);
+	glUniformMatrix4fv(m_modelViewProjId, 1, GL_FALSE, &modelViewProjMat[0][0]);
+	glUniformMatrix4fv(m_normMatId, 1, GL_FALSE, &normMatrix[0][0]);
+
+	glUniform3f(m_lightPosId, lightPos.x, lightPos.y, lightPos.z);
+	glUniform3f(m_emissiveColorId, emissiveColor.x, emissiveColor.y, emissiveColor.z);
+	glUniform3f(m_ambientColorId, ambientColor.x, ambientColor.y, ambientColor.z);
+	glUniform3f(m_lightColorId, lightColor.x, lightColor.y, lightColor.z);
+	glUniform3f(m_objColorId, objColor.x, objColor.y, objColor.z);
+	glUniform3f(m_specColorId, specColor.x, specColor.y, specColor.z);
+
+	glUniform1f(m_objShineId, objShine);
+	glUniform1f(m_objReflectId, objReflect);
     
     glDrawArrays(rendData.rendMode, 0, rendData.numIndices);
 }

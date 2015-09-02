@@ -62,14 +62,28 @@ public:
     virtual void Render(RendData rendData);
     GLuint m_diffuseId;
 };
-
+//TODO: Turn this into the basic lighting model later...
 class SpecularMaterial : public DiffuseMaterial {
     
 public:
     SpecularMaterial(GLuint progId);
     virtual ~SpecularMaterial(){}
     virtual void Render(RendData rendData);
-    GLuint m_specularId;
+    GLuint m_specularId;			//TODO: remove later...
+
+	GLuint m_modelMatId;			//TODO: add in later...
+	GLuint m_modelViewMatId;
+	//GLuint m_modelViewProjMatId;	//TODO: add in later...
+	GLuint m_normMatId;
+
+	GLuint m_lightPosId;
+	GLuint m_emissiveColorId;
+	GLuint m_ambientColorId;
+	GLuint m_lightColorId;
+	GLuint m_objColorId;
+	GLuint m_specColorId;
+	GLuint m_objShineId;
+	GLuint m_objReflectId;
 };
 
 class OutlineMaterial : public SpecularMaterial {
