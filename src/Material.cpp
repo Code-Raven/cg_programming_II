@@ -8,8 +8,6 @@
 
 #include "Material.h"
 
-extern Camera camera;
-
 /*** ToonMaterial ***/
 
 void ToonMaterial::Render(RendData rendData){
@@ -197,7 +195,7 @@ SpecularMaterial::SpecularMaterial(GLuint progId) : DiffuseMaterial(progId) {
     m_specularId = glGetUniformLocation(progId, "specular");
 	m_modelViewId = glGetUniformLocation(progId, "MVMatrix");
     m_normMatId = glGetUniformLocation(progId, "normMatrix");
-	m_viewDirId = glGetUniformLocation(progId, "viewDir");
+	m_viewPosId = glGetUniformLocation(progId, "viewPos");
 }
 
 void SpecularMaterial::Render(RendData rendData){
@@ -224,7 +222,7 @@ void SpecularMaterial::Render(RendData rendData){
     glUniform3f(m_ambientId, ambientColor.x, ambientColor.y, ambientColor.z);
     glUniform3f(m_diffuseId, diffuseColor.x, diffuseColor.y, diffuseColor.z);
     glUniform3f(m_specularId, specularColor.x, specularColor.y, specularColor.z);
-    glUniform3f(m_diffuseId, camera.position.x, camera.position.y, camera.position.z);
+    glUniform3f(m_viewPosId, rendData.cameraPos.x, rendData.cameraPos.y, rendData.cameraPos.z);
 
     glDrawArrays(rendData.rendMode, 0, rendData.numIndices);
 }

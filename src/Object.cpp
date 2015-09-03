@@ -77,7 +77,8 @@ void Object::Render(const Camera& camera){
         mNumIndices,
         m_modelMatrix,
         camera.viewMatrix,
-        camera.projectionMatrix
+        camera.projectionMatrix,
+		camera.position
 	};
     
     m_material->Render(data);

@@ -23,6 +23,7 @@ public:
         mat4 modelMatrix;
         mat4 viewMatrix;
         mat4 projMatrix;
+		vec3 cameraPos;
     };
     
     //TODO: boden, figure uot what to do with texture and shader later…
@@ -69,7 +70,7 @@ public:
     SpecularMaterial(GLuint progId);
     virtual ~SpecularMaterial(){}
     virtual void Render(RendData rendData);
-    GLuint m_specularId, m_modelViewId, m_normMatId, m_viewDirId;
+    GLuint m_specularId, m_modelViewId, m_normMatId, m_viewPosId;
 };
 
 class OutlineMaterial : public SpecularMaterial {
