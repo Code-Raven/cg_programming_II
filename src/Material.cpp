@@ -8,6 +8,8 @@
 
 #include "Material.h"
 
+extern Camera camera;
+
 /*** ToonMaterial ***/
 
 void ToonMaterial::Render(RendData rendData){
@@ -55,10 +57,11 @@ void ToonOutlineMaterial::Render(RendData rendData){
     glUseProgram(m_progId);
     
     mat4 modelMatrix = rendData.modelMatrix;
-    mat4 MVPMatrix = rendData.projMatrix * rendData.viewMatrix * modelMatrix;
+	mat4 MVMatrix = rendData.viewMatrix * modelMatrix;
+    mat4 MVPMatrix = rendData.projMatrix * MVMatrix;
     glUniformMatrix4fv(m_modelViewProjId, 1, GL_FALSE, &MVPMatrix[0][0]);
     glUniformMatrix4fv(m_modelId, 1, GL_FALSE, &modelMatrix[0][0]);
-    
+
     vec3 ambientColor = vec3(0.1, 0, 0.2);
     vec3 diffuseColor = vec3(0.3f, 0.03f, 0.4f);
     vec3 specularColor = vec3(0.9f, 0.7f, 0.9f);
@@ -192,6 +195,9 @@ void DiffuseMaterial::Render(RendData rendData){
 
 SpecularMaterial::SpecularMaterial(GLuint progId) : DiffuseMaterial(progId) {
     m_specularId = glGetUniformLocation(progId, "specular");
+	m_modelViewId = glGetUniformLocation(progId, "MVMatrix");
+    m_normMatId = glGetUniformLocation(progId, "normMatrix");
+	m_viewDirId = glGetUniformLocation(progId, "viewDir");
 }
 
 void SpecularMaterial::Render(RendData rendData){
@@ -203,17 +209,23 @@ void SpecularMaterial::Render(RendData rendData){
     glCullFace(GL_BACK);
     glUseProgram(m_progId);
     
-    mat4 MVPMatrix = rendData.projMatrix * rendData.viewMatrix * rendData.modelMatrix;
+	mat4 modelMatrix = rendData.modelMatrix;
+	mat4 MVMatrix = rendData.viewMatrix * modelMatrix;
+    mat4 MVPMatrix = rendData.projMatrix * MVMatrix;
+	mat4 normalMatrix = transpose(inverse(modelMatrix));
     
     glUniformMatrix4fv(m_modelViewProjId, 1, GL_FALSE, &MVPMatrix[0][0]);
-    
+	glUniformMatrix4fv(m_modelViewId, 1, GL_FALSE, &MVMatrix[0][0]);
+    glUniformMatrix4fv(m_normMatId, 1, GL_FALSE, &normalMatrix[0][0]);
+
     vec3 ambientColor = vec3(1, 0, 0);
     vec3 diffuseColor = vec3(0.5f, 0.5f, 0.5f);
     vec3 specularColor = vec3(1.0f, 1.0f, 1.0f);
     glUniform3f(m_ambientId, ambientColor.x, ambientColor.y, ambientColor.z);
     glUniform3f(m_diffuseId, diffuseColor.x, diffuseColor.y, diffuseColor.z);
     glUniform3f(m_specularId, specularColor.x, specularColor.y, specularColor.z);
-    
+    glUniform3f(m_diffuseId, camera.position.x, camera.position.y, camera.position.z);
+
     glDrawArrays(rendData.rendMode, 0, rendData.numIndices);
 }
 

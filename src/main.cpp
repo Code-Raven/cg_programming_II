@@ -5,6 +5,8 @@ using namespace setup;
 
 GLuint* g_programIds = nullptr;
 
+extern Camera camera;
+
 int main(){
 	if(InitWindowFailed() | InitGlewFailed()){
 		return EXIT_WITH_ERROR;
@@ -31,7 +33,9 @@ int main(){
     GLuint activeProgramId = g_programIds[2];
     glUseProgram(activeProgramId);
 
-	Camera camera(0.0f, 0.0f, -6.0f, 6.0f /*move speed*/);
+	//camera = Camera(0.0f, 0.0f, -6.0f, 6.0f /*move speed*/);
+	camera.position = vec3(0, 0, 6);//);(float xPos, float yPos, float zPos, float moveSpeed)
+	camera.moveSpeed = 6.0f;
 	float aspectRatio = SCREEN_WIDTH/(float)SCREEN_HEIGHT;
 	camera.projectionMatrix = perspective(FIELD_OF_VIEW, aspectRatio, Z_NEAR, Z_FAR);
 
