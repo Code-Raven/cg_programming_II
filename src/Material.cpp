@@ -100,8 +100,9 @@ void ToonOutlineMaterial::Render(RendData rendData){
 
 OutlineMaterial::OutlineMaterial(GLuint progId, GLuint outlineId) : SpecularMaterial(progId)
 {
+	m_outlineId = outlineId;
+	m_modelId = glGetUniformLocation(outlineId, "MMatrix");
     m_modelViewProjOutlineId = glGetUniformLocation(outlineId, "MVPMatrix");
-    m_outlineId = outlineId;
 }
 
 void OutlineMaterial::Render(RendData rendData){
@@ -137,65 +138,22 @@ void OutlineMaterial::Render(RendData rendData){
     glDrawArrays(rendData.rendMode, 0, rendData.numIndices);
 }
 
-/*** AmbientMaterial ***/
-
-AmbientMaterial::AmbientMaterial(GLuint progId) : LitMaterial(progId) {
-    m_ambientId = glGetUniformLocation(progId, "ambient");
-}
-
-void AmbientMaterial::Render(RendData rendData){
-
-    if(m_textId > 0){   //Only if we loaded a texture…
-        glBindTexture(GL_TEXTURE_2D, m_textId);
-    }
-
-    glCullFace(GL_BACK);
-    glUseProgram(m_progId);
-
-    mat4 MVPMatrix = rendData.projMatrix * rendData.viewMatrix * rendData.modelMatrix;
-
-    glUniformMatrix4fv(m_modelViewProjId, 1, GL_FALSE, &MVPMatrix[0][0]);
-    
-    vec3 ambientColor = vec3(1, 0, 0);
-    glUniform3fv(m_ambientId, 3, &ambientColor.x);
-
-    glDrawArrays(rendData.rendMode, 0, rendData.numIndices);
-}
-
-/*** DiffuseMaterial ***/
-
-DiffuseMaterial::DiffuseMaterial(GLuint progId) : AmbientMaterial(progId) {
-    m_diffuseId = glGetUniformLocation(progId, "diffuse");
-}
-
-void DiffuseMaterial::Render(RendData rendData){
-    
-    if(m_textId > 0){   //Only if we loaded a texture…
-        glBindTexture(GL_TEXTURE_2D, m_textId);
-    }
-    
-    glCullFace(GL_BACK);
-    glUseProgram(m_progId);
-    
-    mat4 MVPMatrix = rendData.projMatrix * rendData.viewMatrix * rendData.modelMatrix;
-    
-    glUniformMatrix4fv(m_modelViewProjId, 1, GL_FALSE, &MVPMatrix[0][0]);
-    
-    vec3 ambientColor = vec3(1, 0, 0);
-    vec3 diffuseColor = vec3(0.5f, 0.5f, 0.5f);
-    glUniform3fv(m_ambientId, 3, &ambientColor.x);
-    glUniform3fv(m_diffuseId, 3, &diffuseColor.x);
-    
-    glDrawArrays(rendData.rendMode, 0, rendData.numIndices);
-}
-
 /*** SpecularMaterial ***/
 
-SpecularMaterial::SpecularMaterial(GLuint progId) : DiffuseMaterial(progId) {
-    m_specularId = glGetUniformLocation(progId, "specular");
+SpecularMaterial::SpecularMaterial(GLuint progId) : Material(progId) {
+    
+	//matrix id's...
 	m_modelViewId = glGetUniformLocation(progId, "MVMatrix");
+	m_modelViewProjId = glGetUniformLocation(progId, "MVPMatrix");
+
     m_normMatId = glGetUniformLocation(progId, "normMatrix");
 	m_viewPosId = glGetUniformLocation(progId, "viewPos");
+
+	//basic lighting models...
+	m_emissiveId = glGetUniformLocation(progId, "emissive");
+	m_ambientId = glGetUniformLocation(progId, "ambient");
+	m_diffuseId = glGetUniformLocation(progId, "diffuse");
+	m_specularId = glGetUniformLocation(progId, "specular");
 }
 
 void SpecularMaterial::Render(RendData rendData){
@@ -225,14 +183,6 @@ void SpecularMaterial::Render(RendData rendData){
     glUniform3f(m_viewPosId, rendData.cameraPos.x, rendData.cameraPos.y, rendData.cameraPos.z);
 
     glDrawArrays(rendData.rendMode, 0, rendData.numIndices);
-}
-
-/*** LitMaterial (abstract) ***/
-
-LitMaterial::LitMaterial(GLuint progId) : Material(progId)
-{
-    m_modelViewProjId = glGetUniformLocation(progId, "MVPMatrix");
-    m_modelId = glGetUniformLocation(progId, "MMatrix");
 }
 
 /*** Material (abstract) ***/

@@ -37,40 +37,14 @@ protected:
     GLuint m_progId, m_textId;
 };
 
-class LitMaterial : public Material {
-    
-public:
-    LitMaterial(GLuint progIds);
-    virtual ~LitMaterial(){}
-    virtual void Render(RendData rendData) = 0;
-    GLuint m_modelViewProjId, m_modelId;
-};
-
-class AmbientMaterial : public LitMaterial {
-    
-public:
-    AmbientMaterial(GLuint progId);
-    virtual ~AmbientMaterial(){}
-    virtual void Render(RendData rendData);
-    GLuint m_ambientId;
-};
-
-class DiffuseMaterial : public AmbientMaterial {
-    
-public:
-    DiffuseMaterial(GLuint progId);
-    virtual ~DiffuseMaterial(){}
-    virtual void Render(RendData rendData);
-    GLuint m_diffuseId;
-};
-
-class SpecularMaterial : public DiffuseMaterial {
+class SpecularMaterial : public Material {
     
 public:
     SpecularMaterial(GLuint progId);
     virtual ~SpecularMaterial(){}
     virtual void Render(RendData rendData);
-    GLuint m_specularId, m_modelViewId, m_normMatId, m_viewPosId;
+	GLuint m_modelViewId, m_modelViewProjId, m_normMatId, m_viewPosId;
+    GLuint m_emissiveId, m_ambientId, m_diffuseId, m_specularId;
 };
 
 class OutlineMaterial : public SpecularMaterial {
@@ -79,7 +53,7 @@ public:
     OutlineMaterial(GLuint progId, GLuint outlineId);
     virtual ~OutlineMaterial(){}
     virtual void Render(RendData rendData);
-    GLuint m_outlineId, m_modelViewProjOutlineId;
+    GLuint m_outlineId, m_modelId, m_modelViewProjOutlineId;
 };
 
 class ToonOutlineMaterial : public OutlineMaterial {

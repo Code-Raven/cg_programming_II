@@ -3,7 +3,7 @@
 //TODO: Add functionality later...
 World::World(){
     //material->LoadBMP("dirt.bmp");
-	SpecularMaterial* outlineMat = new SpecularMaterial(g_programIds[1]);
+	SpecularMaterial* outlineMat = new SpecularMaterial(g_programIds[0]);
     //ToonMaterial* toonMat = new ToonMaterial(g_programIds[2], g_programIds[0]);
     
     plane = new Plane[1];
