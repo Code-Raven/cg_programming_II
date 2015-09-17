@@ -98,7 +98,7 @@ void ToonOutlineMaterial::Render(RendData rendData){
 
 /*** OutlineMaterial ***/
 
-OutlineMaterial::OutlineMaterial(GLuint progId, GLuint outlineId) : SpecularMaterial(progId)
+OutlineMaterial::OutlineMaterial(GLuint progId, GLuint outlineId) : BasicMaterial(progId)
 {
 	m_outlineId = outlineId;
 	m_modelId = glGetUniformLocation(outlineId, "MMatrix");
@@ -140,7 +140,7 @@ void OutlineMaterial::Render(RendData rendData){
 
 /*** SpecularMaterial ***/
 
-SpecularMaterial::SpecularMaterial(GLuint progId) : Material(progId) {
+BasicMaterial::BasicMaterial(GLuint progId) : Material(progId) {
     
 	//matrix id's...
 	m_modelViewId = glGetUniformLocation(progId, "MVMatrix");
@@ -161,7 +161,7 @@ SpecularMaterial::SpecularMaterial(GLuint progId) : Material(progId) {
 	m_objShine = glGetUniformLocation(progId, "objShine");
 }
 
-void SpecularMaterial::Render(RendData rendData){
+void BasicMaterial::Render(RendData rendData){
     
     if(m_textId > 0){   //Only if we loaded a texture…
         glBindTexture(GL_TEXTURE_2D, m_textId);

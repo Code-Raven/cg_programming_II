@@ -37,18 +37,18 @@ protected:
     GLuint m_progId, m_textId;
 };
 
-class SpecularMaterial : public Material {
+class BasicMaterial : public Material {
     
 public:
-    SpecularMaterial(GLuint progId);
-    virtual ~SpecularMaterial(){}
+    BasicMaterial(GLuint progId);
+    virtual ~BasicMaterial(){}
     virtual void Render(RendData rendData);
 	GLuint m_modelViewId, m_modelViewProjId, m_normMatId;
     GLuint m_emissiveId, m_ambientId, m_diffuseId, m_specularId;
 	GLuint m_lightPosId, m_viewPosId, m_objReflId, m_objSpecReflId, m_objShine;
 };
 
-class OutlineMaterial : public SpecularMaterial {
+class OutlineMaterial : public BasicMaterial {
     
 public:
     OutlineMaterial(GLuint progId, GLuint outlineId);

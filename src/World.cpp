@@ -3,7 +3,7 @@
 //TODO: Add functionality later...
 World::World(){
     //material->LoadBMP("dirt.bmp");
-	SpecularMaterial* outlineMat = new SpecularMaterial(g_programIds[0]);
+	BasicMaterial* basicMaterial = new BasicMaterial(g_programIds[0]);
     //ToonMaterial* toonMat = new ToonMaterial(g_programIds[2], g_programIds[0]);
     
     plane = new Plane[1];
@@ -28,7 +28,7 @@ World::World(){
     
     #ifdef BUNNY_LARGE
         mesh[0].BuildMesh("bunny_large.obj");
-        mesh[0].SetMaterial(outlineMat);
+        mesh[0].SetMaterial(basicMaterial);
         mesh[0].SetPosition(vec3(0.0f, -3.0f, 0.0f));
         mesh[0].SetScale(vec3(3.0f));
     #endif
