@@ -145,15 +145,20 @@ SpecularMaterial::SpecularMaterial(GLuint progId) : Material(progId) {
 	//matrix id's...
 	m_modelViewId = glGetUniformLocation(progId, "MVMatrix");
 	m_modelViewProjId = glGetUniformLocation(progId, "MVPMatrix");
-
     m_normMatId = glGetUniformLocation(progId, "normMatrix");
-	m_viewPosId = glGetUniformLocation(progId, "viewPos");
 
 	//basic lighting models...
-	m_emissiveId = glGetUniformLocation(progId, "emissive");
-	m_ambientId = glGetUniformLocation(progId, "ambient");
-	m_diffuseId = glGetUniformLocation(progId, "diffuse");
-	m_specularId = glGetUniformLocation(progId, "specular");
+	m_emissiveId = glGetUniformLocation(progId, "objEmissive");		//color belongs to object...
+	m_ambientId = glGetUniformLocation(progId, "lightColor");		//color belongs to light...
+	m_diffuseId = glGetUniformLocation(progId, "objColor");			//color belongs to object...
+	m_specularId = glGetUniformLocation(progId, "specLightCol");	//color belongs to light...
+
+	m_lightPosId = glGetUniformLocation(progId, "lightPos");
+	m_viewPosId = glGetUniformLocation(progId, "viewPos");
+
+	m_objReflId = glGetUniformLocation(progId, "objRefl");
+	m_objSpecReflId = glGetUniformLocation(progId, "objSpecRefl");
+	m_objShine = glGetUniformLocation(progId, "objShine");
 }
 
 void SpecularMaterial::Render(RendData rendData){
@@ -169,18 +174,30 @@ void SpecularMaterial::Render(RendData rendData){
 	mat4 MVMatrix = rendData.viewMatrix * modelMatrix;
     mat4 MVPMatrix = rendData.projMatrix * MVMatrix;
 	mat4 normalMatrix = transpose(inverse(modelMatrix));
+
+	vec3 emissiveColor = vec3(0.0f, 0.0f, 0.0f);	//color belongs to object...
+    vec3 ambientColor = vec3(1.0f, 1.0f, 1.0f);		//color belongs to light...
+    vec3 diffuseColor = vec3(0.7f, 0.5f, 0.8f);		//color belongs to object...
+    vec3 specularColor = vec3(1.0f, 1.0f, 1.0f);	//color belongs to light...
+
+	vec3 lightPos = vec3(3.0f, 0.0f, 0.0f);
+	vec3 cameraPos = rendData.cameraPos;
+
+	glUniform1f(m_objReflId, 0.05f);	//lower value dims ambient color...
+	glUniform1f(m_objSpecReflId, 1.0f);	//lower value dims specular color...
+	glUniform1i(m_objShine, 72);		//higher value makes object shinier
     
     glUniformMatrix4fv(m_modelViewProjId, 1, GL_FALSE, &MVPMatrix[0][0]);
 	glUniformMatrix4fv(m_modelViewId, 1, GL_FALSE, &MVMatrix[0][0]);
     glUniformMatrix4fv(m_normMatId, 1, GL_FALSE, &normalMatrix[0][0]);
 
-    vec3 ambientColor = vec3(1, 0, 0);
-    vec3 diffuseColor = vec3(0.5f, 0.5f, 0.5f);
-    vec3 specularColor = vec3(1.0f, 1.0f, 1.0f);
+	glUniform3f(m_emissiveId, emissiveColor.x, emissiveColor.y, emissiveColor.z);
     glUniform3f(m_ambientId, ambientColor.x, ambientColor.y, ambientColor.z);
     glUniform3f(m_diffuseId, diffuseColor.x, diffuseColor.y, diffuseColor.z);
     glUniform3f(m_specularId, specularColor.x, specularColor.y, specularColor.z);
-    glUniform3f(m_viewPosId, rendData.cameraPos.x, rendData.cameraPos.y, rendData.cameraPos.z);
+
+    glUniform3f(m_viewPosId, cameraPos.x, cameraPos.y, cameraPos.z);
+	glUniform3f(m_lightPosId, lightPos.x, lightPos.y, lightPos.z);
 
     glDrawArrays(rendData.rendMode, 0, rendData.numIndices);
 }

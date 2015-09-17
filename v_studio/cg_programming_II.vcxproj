@@ -39,8 +39,8 @@
   <ItemGroup>
     <None Include="..\resource\basic.frag" />
     <None Include="..\resource\basic.vert" />
-    <None Include="..\resource\specular.frag" />
-    <None Include="..\resource\specular.vert" />
+    <None Include="..\resource\basic_smooth.frag" />
+    <None Include="..\resource\basic_smooth.vert" />
     <None Include="..\resource\texture.frag" />
     <None Include="..\resource\texture.vert" />
     <None Include="..\resource\toon.frag" />

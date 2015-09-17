@@ -72,9 +72,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\resource\basic.frag">
-      <Filter>_Resource</Filter>
-    </None>
     <None Include="..\resource\basic.vert">
       <Filter>_Resource</Filter>
     </None>
@@ -90,10 +87,13 @@
     <None Include="..\resource\toon.vert">
       <Filter>_Resource</Filter>
     </None>
-    <None Include="..\resource\specular.frag">
+    <None Include="..\resource\basic.frag">
       <Filter>_Resource</Filter>
     </None>
-    <None Include="..\resource\specular.vert">
+    <None Include="..\resource\basic_smooth.frag">
+      <Filter>_Resource</Filter>
+    </None>
+    <None Include="..\resource\basic_smooth.vert">
       <Filter>_Resource</Filter>
     </None>
   </ItemGroup>

@@ -43,8 +43,9 @@ public:
     SpecularMaterial(GLuint progId);
     virtual ~SpecularMaterial(){}
     virtual void Render(RendData rendData);
-	GLuint m_modelViewId, m_modelViewProjId, m_normMatId, m_viewPosId;
+	GLuint m_modelViewId, m_modelViewProjId, m_normMatId;
     GLuint m_emissiveId, m_ambientId, m_diffuseId, m_specularId;
+	GLuint m_lightPosId, m_viewPosId, m_objReflId, m_objSpecReflId, m_objShine;
 };
 
 class OutlineMaterial : public SpecularMaterial {
