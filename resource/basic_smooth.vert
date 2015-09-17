@@ -11,36 +11,20 @@
 //TODO: next week, Introduction to antialiasing and texture mipmapping
 //Last week, sun and moon scene. show off projects...
 
-layout(location = 0) in vec3 vertPos;
-layout(location = 2) in vec3 vertNorm;
 
-uniform mat4 MVMatrix;
-uniform mat4 MVPMatrix;
-uniform mat4 normMatrix;
+//TODO: normal vectors and positions are interpolated for each fragment,
+//		and the lighting is computed in the fragment shader
 
-uniform float glow = 0.0f;
-uniform float objRefl = 0.03f;
-uniform float objSpecRefl = 1.0f;
-uniform int shininess = 72;
+layout(location = 0) in vec3 vertPos;	//keep
+layout(location = 2) in vec3 vertNorm;	//keep
 
-uniform vec3 lightPos = vec3(1.0f, 0.0f, 0.0f);
-uniform vec3 viewPos = vec3(0.0f, 1.0f, 0.0f);
-uniform vec3 lightCol = vec3(1.0f, 1.0f, 1.0f);
-uniform vec3 objColor = vec3(0.7f, 0.5f, 0.8f);
+uniform mat4 MVPMatrix;		//keep
+uniform mat4 normMatrix;	//keep
 
-out vec3 vertColor;
+out vec3 position;
+out vec3 normal;	//keep
 
 void main(){
-	vec3 normal = normalize((normMatrix * vec4(vertNorm, 1)).xyz);
-	vec3 viewDir = normalize(viewPos - vertPos);
-	vec3 half = normalize(lightDir + viewDir);
-	float nDotL = max(dot(normal, lightDir), 0);
-	float facing = ((nDotL > 0.0f) ? 1 : 0);
-	vec3 emissive = objColor * glow;										
-	vec3 ambient= objRefl * lightCol;										
-	vec3 diffuse = objColor * lightCol * nDotL;		
-	vec3 specular = objSpecRefl * lightCol * facing * pow(max(dot(normal,half), 0),shininess);	
-
-	vertColor = emissive + ambient + diffuse + specular;
+	normal = normalize((normMatrix * vec4(vertNorm, 1)).xyz);
 	gl_Position = MVPMatrix * vec4(vertPos, 1);
 }
